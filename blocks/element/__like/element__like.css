@@ -8,3 +8,7 @@
   background-repeat: no-repeat;
   background-color: white;
 }
+
+.element__like_status_added{
+  background-image: url(../../../images/like2.svg);
+}
