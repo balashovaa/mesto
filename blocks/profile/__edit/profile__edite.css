@@ -1,0 +1,9 @@
+.profile__edite{
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  background-image: url("../../../images/Edit Button.svg");
+  background-color: black;
+}

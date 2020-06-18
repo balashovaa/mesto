@@ -1,0 +1,5 @@
+.profile__wrapper{
+  height: 43px;
+  display: flex;
+  align-items: baseline;
+}
