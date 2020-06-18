@@ -7,3 +7,11 @@
   background-image: url("../../../images/Edit Button.svg");
   background-color: black;
 }
+
+@media screen and (max-width: 414px){
+  .profile__edite {
+    width: 18px;
+    height: 18px;
+    background-size: contain;
+  }
+}

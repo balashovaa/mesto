@@ -8,3 +8,16 @@
   border-bottom: 1px solid;
   border-color: rgba(84, 84, 84, 0.7);
 }
+
+@media screen and (max-width: 899px) and (min-width: 415px) {
+  .header {
+    max-width: 582px;
+  }
+}
+
+
+@media screen and (max-width: 414px){
+  .header {
+    max-width: 320px;
+  }
+}

@@ -14,3 +14,16 @@
   display: flex;
   justify-content: space-between;
 }
+
+@media screen and (max-width: 899px) and (min-width: 415px) {
+  .profile {
+    max-width: 582px;
+  }
+}
+
+@media screen and (max-width: 414px){
+  .profile {
+    max-width: 282px;
+    flex-direction: column;
+  }
+}

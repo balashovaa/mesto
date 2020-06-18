@@ -7,3 +7,10 @@
   margin: 0;
   padding-right: 17px;
 }
+
+@media screen and (max-width: 414px){
+  .profile__name {
+    font-size: 27px;
+    text-align: center;
+  }
+}
