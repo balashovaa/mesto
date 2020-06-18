@@ -8,6 +8,11 @@
   background-color: black;
 }
 
+.profile__edite:hover {
+  opacity: .4;
+  transition: .4s linear;
+}
+
 @media screen and (max-width: 414px){
   .profile__edite {
     width: 18px;

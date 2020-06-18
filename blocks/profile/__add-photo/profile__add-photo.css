@@ -13,6 +13,11 @@
   align-self: center;
 }
 
+.profile__add-photo:hover {
+  opacity: .4;
+  transition: .4s linear;
+}
+
 @media screen and (max-width: 899px) and (min-width: 415px) {
   .profile__add-photo {
     width: 75px;
