@@ -9,6 +9,12 @@
   background-color: white;
 }
 
+.element__like:hover {
+  opacity: .6;
+  transition: .4s linear;
+}
+
+
 .element__like:focus {
   outline:none;
 }
