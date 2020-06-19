@@ -16,3 +16,48 @@
 @import url('../blocks');
 @import url('../blocks');
 @import url('../blocks');
+
+.form{
+  width: 430px;
+  height: 330px;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.form__title{
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  margin: 0;
+}
+
+.form__item {
+  border: 0;
+  width: 358px;
+  height: 28px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #bcbcc4;
+  background-color: transparent;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.form__button{
+  width: 358px;
+  height: 50px;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  background-color: black;
+  color: white;
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+}

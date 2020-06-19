@@ -77,9 +77,12 @@
 </footer>
 </div>
 <div class="popap">
-<h2 class="popap__title">Редактировать профиль</h2>
-  <input type="text" class="form__item form__item_name">
-  <input type="text" class="form__item form__item_description">
+  <div class="form">
+    <h2 class="form__title">Редактировать профиль</h2>
+    <input type="text" class="form__item form__item_name" id="name" name="name" placeholder="Имя и Фамилия" required>
+    <input type="text" class="form__item form__item_description" id="description" name="description" placeholder="Описание">
+    <button type="submit" class="form__button">Сохранить</button>
+</div>
 </div>
 <script src="index.js"></script>
 </body>
