@@ -13,7 +13,7 @@
   transition: .4s linear;
 }
 
-@media screen and (max-width: 414px){
+@media screen and (max-width: 599px){
   .profile__edite {
     width: 18px;
     height: 18px;

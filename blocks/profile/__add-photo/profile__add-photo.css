@@ -18,14 +18,14 @@
   transition: .4s linear;
 }
 
-@media screen and (max-width: 899px) and (min-width: 415px) {
+@media screen and (max-width: 899px) and (min-width: 600px) {
   .profile__add-photo {
     width: 75px;
   }
 }
 
 
-@media screen and (max-width: 414px){
+@media screen and (max-width: 599px){
   .profile__add-photo {
     width: 282px;
   }

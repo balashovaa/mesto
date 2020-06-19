@@ -8,7 +8,7 @@
   padding-right: 17px;
 }
 
-@media screen and (max-width: 414px){
+@media screen and (max-width: 599px){
   .profile__name {
     font-size: 27px;
     text-align: center;
