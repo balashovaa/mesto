@@ -11,13 +11,13 @@ function toggleModal() {
   modal.classList.toggle('popup_open');
 }
 
-function CloseModalIfOpenModal() {
+function closeModalIfOpenModal() {
   if (modal.classList.contains('popup_open')) {
     toggleModal();
   }
 }
 
-function ToggleModalIfConfirm() {
+function toggleModalIfConfirm() {
   if (confirm('Желаете закрыть окно без сохранения?')) {
     toggleModal();
   }
@@ -32,14 +32,14 @@ function handleOpenPopupClick() {
 
 function handleModalClick(event) {
   if (event.target === modal) {
-    ToggleModalIfConfirm();
+    toggleModalIfConfirm();
   }
 }
 
 function handleWindowKeyDown(event) {
   if (event.key !== undefined) {
     if (event.key === 'Escape') {
-      CloseModalIfOpenModal();
+      closeModalIfOpenModal();
     }
   }
 }
@@ -54,7 +54,7 @@ function handleSaveButtonClick(event) {
 }
 
 function handleClosePopupClick() {
-  ToggleModalIfConfirm();
+  toggleModalIfConfirm();
 }
 
 openPopup.addEventListener('click', handleOpenPopupClick);
