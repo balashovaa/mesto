@@ -11,13 +11,13 @@ function toggleModal() {
   modal.classList.toggle('popup_open');
 }
 
-function ifModalOpenThenCloseModal() {
+function OpenModalThenCloseModal() {
   if (modal.classList.contains('popup_open')) {
     toggleModal();
   }
 }
 
-function ifConfirmThenToggleModal() {
+function ConfirmThenToggleModal() {
   if (confirm('Желаете закрыть окно без сохранения?')) {
     toggleModal();
   }
@@ -40,7 +40,7 @@ closePopup.addEventListener('click', function () {
 
 modal.addEventListener('click', function (event) {
   if (event.target === modal) {
-    ifConfirmThenToggleModal();
+    ConfirmThenToggleModal();
   }
 });
 
@@ -56,18 +56,18 @@ window.addEventListener(
   function (event) {
     if (event.key !== undefined) {
       if (event.key === 'Escape') {
-        ifModalOpenThenCloseModal();
+        OpenModalThenCloseModal();
       }
     } else if (event.keyCode !== undefined) {
       if (event.keyCode === 27) {
-        ifModalOpenThenCloseModal();
+        OpenModalThenCloseModal();
       }
     }
   },
   true);
 
-let addPhoto_button = document.querySelector('.profile__add-photo');
+let addPhotoButton = document.querySelector('.profile__add-photo');
 
-addPhoto_button.addEventListener('click', function () {
+addPhotoButton.addEventListener('click', function () {
   alert(`Пока мы не умеем загружать фото, но мы развиваемся :-)`);
 });
