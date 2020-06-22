@@ -3,8 +3,6 @@
 @import url('__button-save/form__button-save.css');
 
 .form{
-  width: 430px;
-  height: 330px;
   border-radius: 10px;
   display: flex;
   justify-content: space-around;
@@ -13,6 +11,7 @@
   margin: 0 auto;
   background-color: white;
   position: relative;
+  padding: 36px;
 }
 
 @media screen and (max-width: 599px){
