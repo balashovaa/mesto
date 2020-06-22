@@ -1,5 +1,5 @@
 let modal = document.querySelector('.popup');
-let openPopap = document.querySelector('.profile__button-edite');
+let openPopup = document.querySelector('.profile__button-edite');
 let closePopup = document.querySelector('.popup__button-close')
 let itemName = document.querySelector('.form__item_name');
 let itemDescription = document.querySelector('.form__item_description');
@@ -11,63 +11,62 @@ function toggleModal() {
   modal.classList.toggle('popup_open');
 }
 
-function OpenModalThenCloseModal() {
+function CloseModalIfOpenModal() {
   if (modal.classList.contains('popup_open')) {
     toggleModal();
   }
 }
 
-function ConfirmThenToggleModal() {
+function ToggleModalIfConfirm() {
   if (confirm('Желаете закрыть окно без сохранения?')) {
     toggleModal();
   }
 }
 
-openPopap.addEventListener(
-  'click',
-  function () {
-    itemName.value = userName.textContent;
-    itemDescription.value = userDescription.textContent;
+function handleOpenPopupClick() {
+  itemName.value = userName.textContent;
+  itemDescription.value = userDescription.textContent;
 
-    toggleModal();
-  }
-);
+  toggleModal();
+}
 
-closePopup.addEventListener('click', function () {
-    ifConfirmThenToggleModal();
-  }
-);
-
-modal.addEventListener('click', function (event) {
+function handleModalClick(event) {
   if (event.target === modal) {
-    ConfirmThenToggleModal();
+    ToggleModalIfConfirm();
   }
-});
+}
 
-saveButton.addEventListener('click', function () {
+function handleWindowKeyDown(event) {
+  if (event.key !== undefined) {
+    if (event.key === 'Escape') {
+      CloseModalIfOpenModal();
+    }
+  }
+}
+
+function handleSaveButtonClick(event) {
+  event.preventDefault();
+
   userName.textContent = itemName.value;
   userDescription.textContent = itemDescription.value;
 
   toggleModal();
-});
+}
 
-window.addEventListener(
-  "keydown",
-  function (event) {
-    if (event.key !== undefined) {
-      if (event.key === 'Escape') {
-        OpenModalThenCloseModal();
-      }
-    } else if (event.keyCode !== undefined) {
-      if (event.keyCode === 27) {
-        OpenModalThenCloseModal();
-      }
-    }
-  },
-  true);
+function handleClosePopupClick() {
+  ToggleModalIfConfirm();
+}
+
+openPopup.addEventListener('click', handleOpenPopupClick);
+closePopup.addEventListener('click', handleClosePopupClick);
+modal.addEventListener('click', handleModalClick);
+saveButton.addEventListener('click', handleSaveButtonClick);
+window.addEventListener("keydown", handleWindowKeyDown, true);
 
 let addPhotoButton = document.querySelector('.profile__add-photo');
 
-addPhotoButton.addEventListener('click', function () {
+function handleAddPhotoButtonClick() {
   alert(`Пока мы не умеем загружать фото, но мы развиваемся :-)`);
-});
+}
+
+addPhotoButton.addEventListener('click', handleAddPhotoButtonClick);
