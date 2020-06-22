@@ -9,7 +9,10 @@
   border-bottom: 1px solid #bcbcc4;
   background-color: transparent;
   font-size: 14px;
-  font-family: inherit;
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 17px;
 }
 
 @media screen and (max-width: 599px){
