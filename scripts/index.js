@@ -37,10 +37,8 @@ function handleModalClick(event) {
 }
 
 function handleWindowKeyDown(event) {
-  if (event.key !== undefined) {
-    if (event.key === 'Escape') {
-      closeModalIfOpenModal();
-    }
+  if (event.key === 'Escape') {
+    closeModalIfOpenModal();
   }
 }
 

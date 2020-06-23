@@ -6,7 +6,7 @@
   cursor: pointer;
   background-image: url("../../../images/Close_Icon.svg");
   background-size: contain;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0);
   position: absolute;
   right: -50px;
   top: -50px;
