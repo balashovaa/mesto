@@ -8,3 +8,11 @@
   margin: 0;
   text-align: start;
 }
+
+@media screen and (max-width: 599px){
+  .form__title {
+    width: 200px;
+    font-size: 18px;
+    line-height: 22px;
+  }
+}

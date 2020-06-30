@@ -62,12 +62,22 @@ saveButton.addEventListener('click', handleSaveButtonClick);
 window.addEventListener("keydown", handleWindowKeyDown, true);
 
 let addPhotoButton = document.querySelector('.profile__add-photo');
+let itemPlace = document.querySelector('.form__item_place');
+let itemPlaceLink = document.querySelector('.form__item_place-link');
+let modalPhoto = document.querySelector('.popup__photo');
 
 function handleAddPhotoButtonClick() {
-  alert(`Пока мы не умеем загружать фото, но мы развиваемся :-)`);
+  modalPhoto.classList.toggle('popup_open');
+}
+
+function closeModalPhotoIfOpenModal() {
+  if (modalPhoto.classList.contains('popup_open')) {
+    toggleModal();
+  }
 }
 
 addPhotoButton.addEventListener('click', handleAddPhotoButtonClick);
+
 
 
 let heart_list = document.querySelectorAll('.element__like');

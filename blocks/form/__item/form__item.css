@@ -17,6 +17,8 @@
 
 @media screen and (max-width: 599px){
   .form__item {
-    width: 80%;
+    width: 200px;
+    font-size: 12px;
+    line-height: 15px;
   }
 }

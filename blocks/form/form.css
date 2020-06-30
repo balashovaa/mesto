@@ -16,6 +16,14 @@
 
 @media screen and (max-width: 599px){
   .form {
-    width: 95%;
+    width: 260px;
   }
+}
+
+.form__item_place{
+  margin-top: 54px;
+}
+
+.form__item_place-link{
+  margin-top: 30px;
 }
