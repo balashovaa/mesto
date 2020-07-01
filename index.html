@@ -29,45 +29,10 @@
     </section>
     <section class="elements">
       <ul class="element__cards">
-        <li class="element">
-          <img class="element__photo" src="images/karachaevsk.jpg" alt="Карачаевск">
+        <li class="element element_template">
+          <img class="element__photo" src="" alt="">
           <div class="element__info">
-            <h2 class="element__title">Карачаевск</h2>
-            <button class="element__like" type="button"><span class="element__likes-number">0</span></button>
-          </div>
-        </li>
-        <li class="element">
-          <img class="element__photo" src="images/elbrus.jpg" alt="Эльбрус">
-          <div class="element__info">
-            <h2 class="element__title">Эльбрус</h2>
-            <button class="element__like" type="button"><span class="element__likes-number">0</span></button>
-          </div>
-        </li>
-        <li class="element">
-          <img class="element__photo" src="images/dombai.png" alt="Домбай">
-          <div class="element__info">
-            <h2 class="element__title">Домбай</h2>
-            <button class="element__like" type="button"><span class="element__likes-number">0</span></button>
-          </div>
-        </li>
-        <li class="element">
-          <img class="element__photo" src="images/dacha.jpeg" alt="Подмосковье">
-          <div class="element__info">
-            <h2 class="element__title">Подмосковье</h2>
-            <button class="element__like" type="button"><span class="element__likes-number">0</span></button>
-          </div>
-        </li>
-        <li class="element">
-          <img class="element__photo" src="images/latvia.jpeg" alt="Латвия">
-          <div class="element__info">
-            <h2 class="element__title">Латвия</h2>
-            <button class="element__like" type="button"><span class="element__likes-number">0</span></button>
-          </div>
-        </li>
-        <li class="element">
-          <img class="element__photo" src="images/bali.jpeg" alt="Бали">
-          <div class="element__info">
-            <h2 class="element__title">Бали</h2>
+            <h2 class="element__title"></h2>
             <button class="element__like" type="button"><span class="element__likes-number">0</span></button>
           </div>
         </li>
@@ -90,12 +55,12 @@
 </div>
 <div class="popup popup__photo">
   <form class="form" name="popupForm" autocomplete="off">
-    <button class="popup__button-close" type="reset"></button>
+    <button class="popup__button-close popup__button-close_photo" type="reset"></button>
     <h2 class="form__title">Новое место</h2>
     <input type="text" class="form__item form__item_place" id="place" name="place" placeholder="Название" required>
     <input type="text" class="form__item form__item_place-link" id="place-link" name="place-link"
            placeholder="Ссылка на картинку" required>
-    <button type="submit" class="form__button-save">Сохранить</button>
+    <button type="submit" class="form__button-save form__button-save_photo">Сохранить</button>
   </form>
 </div>
 <script src="scripts/index.js"></script>

@@ -1,5 +1,7 @@
 @import url('_description/form__item_description.css');
 @import url('_name/form__item_name.css');
+@import url('_place/form__item_place.css');
+@import url('_place-link/form__item_place-link.css');
 
 .form__item {
   border: 0;

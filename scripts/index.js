@@ -1,3 +1,30 @@
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
+
 let modal = document.querySelector('.popup');
 let openPopup = document.querySelector('.profile__button-edite');
 let closePopup = document.querySelector('.popup__button-close')
@@ -61,29 +88,20 @@ modal.addEventListener('click', handleModalClick);
 saveButton.addEventListener('click', handleSaveButtonClick);
 window.addEventListener("keydown", handleWindowKeyDown, true);
 
-let addPhotoButton = document.querySelector('.profile__add-photo');
-let itemPlace = document.querySelector('.form__item_place');
-let itemPlaceLink = document.querySelector('.form__item_place-link');
-let modalPhoto = document.querySelector('.popup__photo');
 
-function handleAddPhotoButtonClick() {
-  modalPhoto.classList.toggle('popup_open');
-}
+let elementCards = document.querySelector('.element__cards');
+let elementTemplate = document.querySelector('.element_template');
 
-function closeModalPhotoIfOpenModal() {
-  if (modalPhoto.classList.contains('popup_open')) {
-    toggleModal();
-  }
-}
+function addElement(name, link, isPrepend) {
+  const newElement = elementTemplate.cloneNode(true);
 
-addPhotoButton.addEventListener('click', handleAddPhotoButtonClick);
+  newElement.classList.remove('element_template');
+  newElement.querySelector('.element__photo').setAttribute('src', link);
+  newElement.querySelector('.element__photo').setAttribute('alt', name);
+  newElement.querySelector('.element__title').textContent = name;
 
+  let heart = newElement.querySelector('.element__like');
 
-
-let heart_list = document.querySelectorAll('.element__like');
-
-
-for (let heart of heart_list) {
   heart.addEventListener("click", function () {
     let likes_number = heart.querySelector('.element__likes-number');
 
@@ -95,4 +113,40 @@ for (let heart of heart_list) {
 
     heart.classList.toggle('element__like_status_added');
   });
+
+
+  if (isPrepend) {
+    elementCards.prepend(newElement);
+  } else {
+    elementCards.append(newElement);
+  }
+
 }
+
+initialCards.forEach(
+  function (currentValue) {
+    addElement(currentValue.name, currentValue.link, false);
+  }
+);
+
+
+let addPhotoButton = document.querySelector('.profile__add-photo');
+let addPhotoForm = document.querySelector('.popup__photo');
+let savePhotoForm = document.querySelector('.form__button-save_photo');
+let inputFormPlace = document.querySelector('.form__item_place');
+let inputFormPlaceLink = document.querySelector('.form__item_place-link');
+
+
+function handleAddPhotoButtonClick() {
+  addPhotoForm.classList.toggle('popup_open');
+}
+
+function handleSavePhotoButtonClick(event) {
+  event.preventDefault();
+
+  addElement(inputFormPlace.value, inputFormPlaceLink.value, true);
+  addPhotoForm.classList.toggle('popup_open');
+}
+
+addPhotoButton.addEventListener('click', handleAddPhotoButtonClick);
+savePhotoForm.addEventListener('click', handleSavePhotoButtonClick);
