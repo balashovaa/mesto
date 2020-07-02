@@ -6,7 +6,7 @@
   cursor: pointer;
   background-image: url("../../../images/Close_Icon.svg");
   background-size: contain;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: initial;
   position: absolute;
   right: -50px;
   top: -50px;
@@ -24,6 +24,5 @@
     right: 5px;
     top: 5px;
     background-image: url("../../../images/Close_Icon-mob.svg");
-    background-color: white;
   }
 }

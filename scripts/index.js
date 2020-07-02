@@ -1,3 +1,5 @@
+//начало
+
 const initialCards = [
   {
     name: 'Архыз',
@@ -25,9 +27,9 @@ const initialCards = [
   }
 ];
 
-let modal = document.querySelector('.popup');
-let popupProfile = document.querySelector ('.popup__profile');
-let popupAddPhoto = document.querySelector ('.popup__photo');
+
+let popupProfile = document.querySelector('.popup__profile');
+let popupAddPhoto = document.querySelector('.popup__photo');
 let openPopupProfile = document.querySelector('.profile__button-edite');
 let openPopupAddPhoto = document.querySelector('.profile__add-photo');
 let closePopupProfile = document.querySelector('.popup__button-close');
@@ -49,13 +51,17 @@ function openModal(modal) {
   modal.classList.toggle('popup_open');
 }
 
-openPopupProfile.addEventListener('click', function() {
-openModal(popupProfile);
-});
 
-openPopupAddPhoto.addEventListener('click', function() {
-  openModal(popupAddPhoto);
-});
+function addOpenModal(modal, element) {
+  function handleClick() {
+    openModal(modal);
+  }
+
+  element.addEventListener('click', handleClick);
+}
+
+addOpenModal(popupProfile, openPopupProfile);
+addOpenModal(popupAddPhoto, openPopupAddPhoto);
 
 
 function closeModal(modal) {
@@ -64,13 +70,16 @@ function closeModal(modal) {
   }
 }
 
-closePopupProfile.addEventListener('click', function() {
-  closeModal(popupProfile);
-});
+function addCloseModal(modal, element) {
+  function handleClick() {
+    closeModal(modal);
+  }
 
-closePopupAddPhoto.addEventListener('click', function() {
-  closeModal(popupAddPhoto);
-});
+  element.addEventListener('click', handleClick);
+}
+
+addCloseModal(popupProfile, closePopupProfile);
+addCloseModal(popupAddPhoto, closePopupAddPhoto);
 
 
 function handleSaveButtonClick(event) {
@@ -89,10 +98,10 @@ function handleSavePhotoButtonClick(event) {
   event.preventDefault();
 
   addElement(inputFormPlace.value, inputFormPlaceLink.value, true);
-  popupAddPhoto.classList.toggle('popup_open');
+  closeModal(popupAddPhoto);
 }
-saveButtonPhotoForm.addEventListener('click', handleSavePhotoButtonClick);
 
+saveButtonPhotoForm.addEventListener('click', handleSavePhotoButtonClick);
 
 
 let elementCards = document.querySelector('.element__cards');
@@ -106,28 +115,50 @@ function addElement(name, link, isPrepend) {
   newElement.querySelector('.element__photo').setAttribute('alt', name);
   newElement.querySelector('.element__title').textContent = name;
 
-  let heart = newElement.querySelector('.element__like');
+  let like = newElement.querySelector('.element__like');
+  let likes_number = like.querySelector('.element__likes-number');
 
-  heart.addEventListener("click", function () {
-    let likes_number = heart.querySelector('.element__likes-number');
-
-    if (heart.classList.contains('element__like_status_added')) {
+  function handleLikeClick() {
+    if (like.classList.contains('element__like_status_added')) {
       likes_number.textContent--;
     } else {
       likes_number.textContent++;
     }
 
-    heart.classList.toggle('element__like_status_added');
-  });
+    like.classList.toggle('element__like_status_added');
+  }
 
-  let deleteButton = newElement.querySelector ('.element__delete-button');
+  like.addEventListener("click", handleLikeClick);
+
+  let deleteButton = newElement.querySelector('.element__delete-button');
 
 
-  function removeElement () {
+  function handleDeleteButtonClick() {
     newElement.remove();
   }
 
-  deleteButton.addEventListener('click', removeElement);
+  deleteButton.addEventListener('click', handleDeleteButtonClick);
+
+  let popupPhotoCard = document.querySelector('.popup__photo-card');
+  let openImagePopup = newElement.querySelector('.element__photo');
+  let popupImage = document.querySelector('.popup__image');
+  let popupImageDescription = document.querySelector('.popup__image-description');
+  let closePopupImage = document.querySelector('.popup__button-close_image');
+
+  function handleOpenImagePopupClick() {
+    popupImage.setAttribute('src', link);
+    popupImageDescription.textContent = name;
+
+    openModal(popupPhotoCard);
+  }
+
+  openImagePopup.addEventListener('click', handleOpenImagePopupClick);
+
+  function handleClosePopupImageClick() {
+    closeModal(popupPhotoCard);
+  }
+
+  closePopupImage.addEventListener('click', handleClosePopupImageClick);
 
 
   if (isPrepend) {
@@ -143,6 +174,5 @@ initialCards.forEach(
     addElement(currentValue.name, currentValue.link, false);
   }
 );
-
 
 
