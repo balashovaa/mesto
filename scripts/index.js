@@ -48,7 +48,7 @@ itemName.value = userName.textContent;
 itemDescription.value = userDescription.textContent;
 
 function openModal(modal) {
-  modal.classList.toggle('popup_open');
+  modal.classList.add('popup_open');
 }
 
 
@@ -153,13 +153,7 @@ function addElement(name, link, isPrepend) {
   }
 
   openImagePopup.addEventListener('click', handleOpenImagePopupClick);
-
-  function handleClosePopupImageClick() {
-    closeModal(popupPhotoCard);
-  }
-
-  closePopupImage.addEventListener('click', handleClosePopupImageClick);
-
+  addCloseModal(popupPhotoCard, closePopupImage);
 
   if (isPrepend) {
     elementCards.prepend(newElement);

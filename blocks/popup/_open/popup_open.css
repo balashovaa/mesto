@@ -1,6 +1,5 @@
-.popup_open{
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  transition: fade-out 3s ease-out;
+.popup_open {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 1s;
 }

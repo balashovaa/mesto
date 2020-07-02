@@ -9,12 +9,3 @@
 @import url('../blocks/popup/popup.css');
 @import url('../blocks/popup/_open/popup_open.css');
 @import url('../blocks/form/form.css');
-
-@keyframes fade-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
