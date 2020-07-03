@@ -1,5 +1,3 @@
-//начало
-
 const initialCards = [
   {
     name: 'Архыз',
@@ -28,20 +26,20 @@ const initialCards = [
 ];
 
 
-let popupProfile = document.querySelector('.popup__profile');
-let popupAddPhoto = document.querySelector('.popup__photo');
-let openPopupProfile = document.querySelector('.profile__button-edite');
-let openPopupAddPhoto = document.querySelector('.profile__add-photo');
-let closePopupProfile = document.querySelector('.popup__button-close');
-let closePopupAddPhoto = document.querySelector('.popup__button-close_photo');
-let itemName = document.querySelector('.form__item_name');
-let itemDescription = document.querySelector('.form__item_description');
-let userName = document.querySelector('.profile__name');
-let userDescription = document.querySelector('.profile__description');
-let inputFormPlace = document.querySelector('.form__item_place');
-let inputFormPlaceLink = document.querySelector('.form__item_place-link');
-let saveButtonPopupProfile = document.querySelector('.form__button-save');
-let saveButtonPhotoForm = document.querySelector('.form__button-save_photo');
+const popupProfile = document.querySelector('.popup__profile');
+const popupAddPhoto = document.querySelector('.popup__photo');
+const openPopupProfile = document.querySelector('.profile__button-edite');
+const openPopupAddPhoto = document.querySelector('.profile__add-photo');
+const closePopupProfile = document.querySelector('.popup__button-close');
+const closePopupAddPhoto = document.querySelector('.popup__button-close_photo');
+const itemName = document.querySelector('.form__item_name');
+const itemDescription = document.querySelector('.form__item_description');
+const userName = document.querySelector('.profile__name');
+const userDescription = document.querySelector('.profile__description');
+const inputFormPlace = document.querySelector('.form__item_place');
+const inputFormPlaceLink = document.querySelector('.form__item_place-link');
+const saveButtonPopupProfile = document.querySelector('.form__button-save');
+const saveButtonPhotoForm = document.querySelector('.form__button-save_photo');
 
 
 itemName.value = userName.textContent;
@@ -104,8 +102,8 @@ function handleSavePhotoButtonClick(event) {
 saveButtonPhotoForm.addEventListener('click', handleSavePhotoButtonClick);
 
 
-let elementCards = document.querySelector('.element__cards');
-let elementTemplate = document.querySelector('.element_template');
+const elementCards = document.querySelector('.element__cards');
+const elementTemplate = document.querySelector('.element_template');
 
 function addElement(name, link, isPrepend) {
   const newElement = elementTemplate.cloneNode(true);
@@ -115,8 +113,8 @@ function addElement(name, link, isPrepend) {
   newElement.querySelector('.element__photo').setAttribute('alt', name);
   newElement.querySelector('.element__title').textContent = name;
 
-  let like = newElement.querySelector('.element__like');
-  let likes_number = like.querySelector('.element__likes-number');
+  const like = newElement.querySelector('.element__like');
+  const likes_number = like.querySelector('.element__likes-number');
 
   function handleLikeClick() {
     if (like.classList.contains('element__like_status_added')) {
@@ -130,7 +128,7 @@ function addElement(name, link, isPrepend) {
 
   like.addEventListener("click", handleLikeClick);
 
-  let deleteButton = newElement.querySelector('.element__delete-button');
+  const deleteButton = newElement.querySelector('.element__delete-button');
 
 
   function handleDeleteButtonClick() {
@@ -139,11 +137,11 @@ function addElement(name, link, isPrepend) {
 
   deleteButton.addEventListener('click', handleDeleteButtonClick);
 
-  let popupPhotoCard = document.querySelector('.popup__photo-card');
-  let openImagePopup = newElement.querySelector('.element__photo');
-  let popupImage = document.querySelector('.popup__image');
-  let popupImageDescription = document.querySelector('.popup__image-description');
-  let closePopupImage = document.querySelector('.popup__button-close_image');
+  const popupPhotoCard = document.querySelector('.popup__photo-card');
+  const openImagePopup = newElement.querySelector('.element__photo');
+  const popupImage = document.querySelector('.popup__image');
+  const popupImageDescription = document.querySelector('.popup__image-description');
+  const closePopupImage = document.querySelector('.popup__button-close_image');
 
   function handleOpenImagePopupClick() {
     popupImage.setAttribute('src', link);
