@@ -38,8 +38,8 @@ const userName = document.querySelector('.profile__name');
 const userDescription = document.querySelector('.profile__description');
 const inputFormPlace = document.querySelector('.form__item_place');
 const inputFormPlaceLink = document.querySelector('.form__item_place-link');
-const saveButtonPopupProfile = document.querySelector('.form__button-save');
-const saveButtonPhotoForm = document.querySelector('.form__button-save_photo');
+const savePopupProfile = document.querySelector('.form__save-profile');
+const savePhotoForm = document.querySelector('.form__save_photo');
 
 
 itemName.value = userName.textContent;
@@ -49,38 +49,27 @@ function openModal(modal) {
   modal.classList.add('popup_open');
 }
 
+openPopupProfile.addEventListener('click', function () {
+  openModal(popupProfile)
+})
 
-function addOpenModal(modal, element) {
-  function handleClick() {
-    openModal(modal);
-  }
-
-  element.addEventListener('click', handleClick);
-}
-
-addOpenModal(popupProfile, openPopupProfile);
-addOpenModal(popupAddPhoto, openPopupAddPhoto);
-
+openPopupAddPhoto.addEventListener('click', function () {
+  openModal(popupAddPhoto)
+})
 
 function closeModal(modal) {
-  if (modal.classList.contains('popup_open')) {
-    modal.classList.remove('popup_open');
-  }
+  modal.classList.remove('popup_open');
 }
 
-function addCloseModal(modal, element) {
-  function handleClick() {
-    closeModal(modal);
-  }
+closePopupProfile.addEventListener('click', function () {
+  closeModal(popupProfile)
+});
 
-  element.addEventListener('click', handleClick);
-}
+closePopupAddPhoto.addEventListener('click', function () {
+  closeModal(popupAddPhoto)
+});
 
-addCloseModal(popupProfile, closePopupProfile);
-addCloseModal(popupAddPhoto, closePopupAddPhoto);
-
-
-function handleSaveButtonClick(event) {
+function handleSaveProfileInfoClick(event) {
   event.preventDefault();
 
   userName.textContent = itemName.value;
@@ -89,17 +78,20 @@ function handleSaveButtonClick(event) {
   closeModal(popupProfile);
 }
 
-saveButtonPopupProfile.addEventListener('click', handleSaveButtonClick);
+savePopupProfile.addEventListener('submit', handleSaveProfileInfoClick);
 
 
-function handleSavePhotoButtonClick(event) {
+function handleSavePhotoClick(event) {
   event.preventDefault();
+
 
   addElement(inputFormPlace.value, inputFormPlaceLink.value, true);
   closeModal(popupAddPhoto);
+  inputFormPlace.value='';
+  inputFormPlaceLink.value='';
 }
 
-saveButtonPhotoForm.addEventListener('click', handleSavePhotoButtonClick);
+savePhotoForm.addEventListener('submit', handleSavePhotoClick);
 
 
 const elementCards = document.querySelector('.element__cards');
@@ -151,7 +143,10 @@ function addElement(name, link, isPrepend) {
   }
 
   openImagePopup.addEventListener('click', handleOpenImagePopupClick);
-  addCloseModal(popupPhotoCard, closePopupImage);
+
+  closePopupImage.addEventListener('click', function () {
+    closeModal(popupPhotoCard)
+  });
 
   if (isPrepend) {
     elementCards.prepend(newElement);
