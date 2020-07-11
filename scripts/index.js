@@ -49,25 +49,55 @@ function openModal(modal) {
   modal.classList.add('popup_open');
 }
 
-openPopupProfile.addEventListener('click', function () {
-  openModal(popupProfile)
-})
+function addOpenModal(modal, element) {
+  function handleClick() {
+    openModal(modal);
+  }
 
-openPopupAddPhoto.addEventListener('click', function () {
-  openModal(popupAddPhoto)
-})
+  element.addEventListener('click', handleClick);
+}
+
+addOpenModal(popupProfile, openPopupProfile);
+
+addOpenModal(popupAddPhoto, openPopupAddPhoto);
 
 function closeModal(modal) {
   modal.classList.remove('popup_open');
 }
 
-closePopupProfile.addEventListener('click', function () {
-  closeModal(popupProfile)
-});
+function addCloseModal(modal, element) {
+  function handleClick() {
+    closeModal(modal);
+  }
 
-closePopupAddPhoto.addEventListener('click', function () {
-  closeModal(popupAddPhoto)
-});
+  element.addEventListener('click', handleClick);
+}
+
+addCloseModal(popupProfile, closePopupProfile);
+addCloseModal(popupAddPhoto, closePopupAddPhoto);
+
+function handleWindowKeyDown(evt) {
+  let popupOpen = document.querySelector ('.popup_open')
+
+  if (evt.key === 'Escape') {
+    closeModal(popupOpen)
+    evt.target.removeEventListener('keydown', handleWindowKeyDown);
+  }
+}
+
+window.addEventListener('keydown', handleWindowKeyDown);
+
+
+let popup = document.querySelector ('.popup');
+
+function closePopupOnOverlayClick (event) {
+  if (event.target === event.currentTarget) {
+    closeModal(event.currentTarget)
+  }
+}
+
+popup.addEventListener('click', closePopupOnOverlayClick)
+
 
 function handleSaveProfileInfoClick(event) {
   event.preventDefault();
@@ -106,15 +136,8 @@ function addElement(name, link, isPrepend) {
   newElement.querySelector('.element__title').textContent = name;
 
   const like = newElement.querySelector('.element__like');
-  const likes_number = like.querySelector('.element__likes-number');
 
   function handleLikeClick() {
-    if (like.classList.contains('element__like_status_added')) {
-      likes_number.textContent--;
-    } else {
-      likes_number.textContent++;
-    }
-
     like.classList.toggle('element__like_status_added');
   }
 
