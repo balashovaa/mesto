@@ -40,13 +40,22 @@ const inputFormPlace = document.querySelector('.form__item_place');
 const inputFormPlaceLink = document.querySelector('.form__item_place-link');
 const savePopupProfile = document.querySelector('.form__save-profile');
 const savePhotoForm = document.querySelector('.form__save_photo');
-
+let popupOpen;
 
 itemName.value = userName.textContent;
 itemDescription.value = userDescription.textContent;
 
+function handleWindowKeyDown(evt) {
+  if (evt.key === 'Escape') {
+    closeModal(popupOpen)
+    window.removeEventListener('keydown', handleWindowKeyDown);
+  }
+}
+
 function openModal(modal) {
+  popupOpen = modal;
   modal.classList.add('popup_open');
+  window.addEventListener('keydown', handleWindowKeyDown);
 }
 
 function addOpenModal(modal, element) {
@@ -76,27 +85,22 @@ function addCloseModal(modal, element) {
 addCloseModal(popupProfile, closePopupProfile);
 addCloseModal(popupAddPhoto, closePopupAddPhoto);
 
-function handleWindowKeyDown(evt) {
-  let popupOpen = document.querySelector ('.popup_open')
-
-  if (evt.key === 'Escape') {
-    closeModal(popupOpen)
-    evt.target.removeEventListener('keydown', handleWindowKeyDown);
-  }
-}
-
-window.addEventListener('keydown', handleWindowKeyDown);
-
-
-let popup = document.querySelector ('.popup');
+let popupList = document.querySelectorAll('.popup');
 
 function closePopupOnOverlayClick (event) {
+
   if (event.target === event.currentTarget) {
     closeModal(event.currentTarget)
   }
+  event.target.removeEventListener('click', closePopupOnOverlayClick)
 }
 
-popup.addEventListener('click', closePopupOnOverlayClick)
+popupList.forEach((popup) => {
+  popup.addEventListener('click', closePopupOnOverlayClick);
+})
+
+
+
 
 
 function handleSaveProfileInfoClick(event) {
