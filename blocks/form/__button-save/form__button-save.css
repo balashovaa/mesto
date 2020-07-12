@@ -21,6 +21,13 @@
   transition: .4s linear;
 }
 
+
+.form__button-save_disabled {
+  background-color: white;
+  color: #E5E5E5;;
+  border: 1px solid #E5E5E5;;
+}
+
 @media screen and (max-width: 599px){
   .form__button-save {
     width: 200px;

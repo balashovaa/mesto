@@ -45,12 +45,15 @@
   </footer>
 </div>
 <div class="popup popup__profile">
-  <form class="form form__save-profile" name="popupForm" autocomplete="off">
+  <form class="form form__save-profile" name="popupForm" autocomplete="off" novalidate>
     <button class="popup__button-close" type="reset"></button>
     <h2 class="form__title">Редактировать профиль</h2>
-    <input type="text" class="form__item form__item_name" id="name" name="name" placeholder="Имя и Фамилия" required>
-    <input type="text" class="form__item form__item_description" id="description" name="description"
-           placeholder="Описание" required>
+    <input id="profile-name-input" type="text" class="form__item form__item_name"  name="name" placeholder="Имя и Фамилия" required
+           minlength="2" maxlength="40">
+    <span id="profile-name-input-error" class="form__item-error"></span>
+    <input id="profile-description-input" type="text" class="form__item form__item_description" name="description"
+           placeholder="Описание" required minlength="2" maxlength="200">
+    <span id="profile-description-input-error" class="form__item-error"></span>
     <button type="submit" class="form__button-save">Сохранить</button>
   </form>
 </div>
@@ -58,17 +61,20 @@
   <form class="form form__save_photo" name="popupForm" autocomplete="off">
     <button class="popup__button-close popup__button-close_photo" type="reset"></button>
     <h2 class="form__title">Новое место</h2>
-    <input type="text" class="form__item form__item_place" id="place" name="place" placeholder="Название" required>
-    <input type="text" class="form__item form__item_place-link" id="place-link" name="place-link"
+    <input id="place-input" type="text" class="form__item form__item_place" name="place" placeholder="Название" required
+           minlength="1" maxlength="30">
+    <span id="place-input-error" class="form__item-error"></span>
+    <input id="place-link-input" type="url" class="form__item form__item_place-link"  name="place-link"
            placeholder="Ссылка на картинку" required>
-    <button type="submit" class="form__button-save">Сохранить</button>
+    <span id="place-link-input-error" class="form__item-error"></span>
+    <button type="submit" class="form__button-save">Создать</button>
   </form>
 </div>
 <div class="popup popup__photo-card">
   <div class="popup__photo-container">
     <button class="popup__button-close popup__button-close_image" type="reset"></button>
-  <img class="popup__image" src="" alt="">
-  <p class="popup__image-description"></p>
+    <img class="popup__image" src="" alt="">
+    <p class="popup__image-description"></p>
   </div>
 </div>
 <script src="scripts/index.js"></script>

@@ -87,20 +87,17 @@ addCloseModal(popupAddPhoto, closePopupAddPhoto);
 
 let popupList = document.querySelectorAll('.popup');
 
-function closePopupOnOverlayClick (event) {
+function closePopupOnOverlayClick(event) {
 
   if (event.target === event.currentTarget) {
     closeModal(event.currentTarget)
   }
-  event.target.removeEventListener('click', closePopupOnOverlayClick)
+  // event.target.removeEventListener('click', closePopupOnOverlayClick)
 }
 
 popupList.forEach((popup) => {
-  popup.addEventListener('click', closePopupOnOverlayClick);
+  popup.addEventListener('mousedown', closePopupOnOverlayClick);
 })
-
-
-
 
 
 function handleSaveProfileInfoClick(event) {
@@ -121,8 +118,8 @@ function handleSavePhotoClick(event) {
 
   addElement(inputFormPlace.value, inputFormPlaceLink.value, true);
   closeModal(popupAddPhoto);
-  inputFormPlace.value='';
-  inputFormPlaceLink.value='';
+  inputFormPlace.value = '';
+  inputFormPlaceLink.value = '';
 }
 
 savePhotoForm.addEventListener('submit', handleSavePhotoClick);
@@ -188,5 +185,77 @@ initialCards.forEach(
     addElement(currentValue.name, currentValue.link, false);
   }
 );
+
+
+
+const showInputError = (formElement, formInput, errorMessage) => {
+  const formError = formElement.querySelector(`#${formInput.id}-error`);
+
+  formInput.classList.add('form__item_type_error');
+  formError.textContent = errorMessage;
+  formError.classList.add('.form__item-error');
+};
+
+const hideInputError = (formElement, formInput) => {
+  const formError = formElement.querySelector(`#${formInput.id}-error`);
+
+  formInput.classList.remove('form__item_type_error');
+  formError.textContent = '';
+  formError.classList.remove('.form__item-error');
+};
+
+const checkInputIsValid = (formElement, formInput) => {
+  if (!formInput.validity.valid) {
+    showInputError(formElement, formInput, formInput.validationMessage);
+  } else {
+    hideInputError(formElement, formInput);
+  }
+};
+
+const setEventListeners = (formElement) => {
+  const inputList = Array.from(formElement.querySelectorAll('.form__item'));
+  const buttonElement = formElement.querySelector('.form__button-save');
+
+  toggleButton(inputList, buttonElement);
+
+  inputList.forEach((formInput) => {
+    formInput.addEventListener('input', () => {
+      checkInputIsValid(formElement, formInput);
+
+      toggleButton(inputList, buttonElement);
+    });
+  });
+};
+
+function InvalidInput (inputList) {
+  return inputList.some((inputElement) => {
+    return !inputElement.validity.valid;
+  });
+}
+
+function toggleButton (inputList, buttonElement) {
+  if (InvalidInput(inputList)) {
+    buttonElement.classList.add('form__button-save_disabled');
+    buttonElement.setAttribute('disabled', 'disabled');
+  } else {
+    buttonElement.classList.remove('form__button-save_disabled');
+    buttonElement.removeAttribute('disabled', 'disabled');
+  }
+}
+
+const enableValidation = () => {
+  const formList = Array.from(document.querySelectorAll('.form'));
+
+  formList.forEach((formElement) => {
+    formElement.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+    });
+
+    setEventListeners(formElement);
+  });
+};
+
+enableValidation();
+
 
 

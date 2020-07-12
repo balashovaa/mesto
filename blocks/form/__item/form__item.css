@@ -17,6 +17,29 @@
   line-height: 17px;
 }
 
+.form__item_type_error {
+  border-bottom-color: red;
+}
+
+.form__item-error {
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 15px;
+  color: red;
+  padding-top: 5px;
+  text-align: start;
+  width: 358px;
+}
+
+@media screen and (max-width: 599px){
+  .form__item-error {
+    width: 200px;
+  }
+}
+
+
 @media screen and (max-width: 599px){
   .form__item {
     width: 200px;
@@ -24,3 +47,4 @@
     line-height: 15px;
   }
 }
+
