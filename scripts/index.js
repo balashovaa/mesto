@@ -184,5 +184,11 @@ initialCards.forEach(
   }
 );
 
-
-
+enableValidation({
+  formSelector: '.form',
+  inputSelector: '.form__item',
+  submitButtonSelector: '.form__button-save',
+  inactiveButtonClass: 'form__button-save_disabled',
+  inputErrorClass: 'form__item_type_error',
+  errorClass: 'form__item-error'
+});
