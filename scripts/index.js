@@ -85,7 +85,7 @@ function addCloseModal(modal, element) {
 addCloseModal(popupProfile, closePopupProfile);
 addCloseModal(popupAddPhoto, closePopupAddPhoto);
 
-let popupList = document.querySelectorAll('.popup');
+const popupList = document.querySelectorAll('.popup');
 
 function closePopupOnOverlayClick(event) {
   if (event.target === event.currentTarget) {
@@ -123,10 +123,40 @@ function handleSavePhotoClick(event) {
 savePhotoForm.addEventListener('submit', handleSavePhotoClick);
 
 
-const elementCards = document.querySelector('.element__cards');
-const elementTemplate = document.querySelector('.element_template');
 
-function addElement(name, link, isPrepend) {
+
+function addToDOM(isPrepend, newElement) {
+  const elementCards = document.querySelector('.element__cards');
+
+  if (isPrepend) {
+    elementCards.prepend(newElement);
+  } else {
+    elementCards.append(newElement);
+  }
+}
+
+function addLikeToElement(newElement) {
+  const like = newElement.querySelector('.element__like');
+
+  function handleLikeClick() {
+    like.classList.toggle('element__like_status_added');
+  }
+
+  like.addEventListener('click', handleLikeClick);
+}
+
+function addDeleteToElement(newElement) {
+  const deleteButton = newElement.querySelector('.element__delete-button');
+
+  function handleDeleteButtonClick() {
+    newElement.remove();
+  }
+
+  deleteButton.addEventListener('click', handleDeleteButtonClick);
+}
+
+function createElement(name, link) {
+  const elementTemplate = document.querySelector('.element_template');
   const newElement = elementTemplate.cloneNode(true);
 
   newElement.classList.remove('element_template');
@@ -134,23 +164,10 @@ function addElement(name, link, isPrepend) {
   newElement.querySelector('.element__photo').setAttribute('alt', name);
   newElement.querySelector('.element__title').textContent = name;
 
-  const like = newElement.querySelector('.element__like');
+  return newElement;
+}
 
-  function handleLikeClick() {
-    like.classList.toggle('element__like_status_added');
-  }
-
-  like.addEventListener("click", handleLikeClick);
-
-  const deleteButton = newElement.querySelector('.element__delete-button');
-
-
-  function handleDeleteButtonClick() {
-    newElement.remove();
-  }
-
-  deleteButton.addEventListener('click', handleDeleteButtonClick);
-
+function addModalToElement(newElement, name, link) {
   const popupPhotoCard = document.querySelector('.popup__photo-card');
   const openImagePopup = newElement.querySelector('.element__photo');
   const popupImage = document.querySelector('.popup__image');
@@ -166,16 +183,16 @@ function addElement(name, link, isPrepend) {
 
   openImagePopup.addEventListener('click', handleOpenImagePopupClick);
 
-  closePopupImage.addEventListener('click', function () {
-    closeModal(popupPhotoCard)
-  });
+  addCloseModal(popupPhotoCard, closePopupImage);
+}
 
-  if (isPrepend) {
-    elementCards.prepend(newElement);
-  } else {
-    elementCards.append(newElement);
-  }
+function addElement(name, link, isPrepend) {
+  const newElement = createElement(name, link);
 
+  addLikeToElement(newElement);
+  addDeleteToElement(newElement);
+  addModalToElement(newElement, name, link);
+  addToDOM(isPrepend, newElement);
 }
 
 initialCards.forEach(
