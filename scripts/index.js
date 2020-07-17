@@ -89,7 +89,7 @@ const popupList = document.querySelectorAll('.popup');
 
 function closePopupOnOverlayClick(event) {
   if (event.target === event.currentTarget) {
-    closeModal(event.currentTarget)
+    closeModal(event.currentTarget);
   }
 }
 
@@ -118,6 +118,10 @@ function handleSavePhotoClick(event) {
   closeModal(popupAddPhoto);
   inputFormPlace.value = '';
   inputFormPlaceLink.value = '';
+
+  const button =  savePhotoForm.querySelector('.form__button-save');
+  button.setAttribute('disabled', 'disabled');
+  button.classList.add('form__button-save_disabled');
 }
 
 savePhotoForm.addEventListener('submit', handleSavePhotoClick);
