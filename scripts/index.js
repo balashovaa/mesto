@@ -75,7 +75,8 @@ function closeModal(modal) {
 }
 
 function addCloseModal(modal, element) {
-  function handleClick() {
+  function handleClick(event) {
+    event.preventDefault();
     closeModal(modal);
   }
 
