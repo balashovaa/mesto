@@ -1,3 +1,6 @@
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+
 const initialCards = [
   {
     name: 'Архыз',
@@ -115,7 +118,8 @@ function handleSavePhotoClick(event) {
   event.preventDefault();
 
 
-  addElement(inputFormPlace.value, inputFormPlaceLink.value, true);
+  const myCard = new Card(inputFormPlace.value, inputFormPlaceLink.value, '.element_template', handleOpenImagePopupClick);
+  addToDOM(true, myCard.getElement());
   closeModal(popupAddPhoto);
   inputFormPlace.value = '';
   inputFormPlaceLink.value = '';
@@ -127,7 +131,18 @@ function handleSavePhotoClick(event) {
 
 savePhotoForm.addEventListener('submit', handleSavePhotoClick);
 
+const popupPhotoCard = document.querySelector('.popup__photo-card');
+const popupImage = document.querySelector('.popup__image');
+const popupImageDescription = document.querySelector('.popup__image-description');
+const closePopupImage = document.querySelector('.popup__button-close_image');
+addCloseModal(popupPhotoCard, closePopupImage);
 
+function handleOpenImagePopupClick(name, link) {
+  popupImage.setAttribute('src', link);
+  popupImageDescription.textContent = name;
+
+  openModal(popupPhotoCard);
+}
 
 
 function addToDOM(isPrepend, newElement) {
@@ -140,77 +155,24 @@ function addToDOM(isPrepend, newElement) {
   }
 }
 
-function addLikeToElement(newElement) {
-  const like = newElement.querySelector('.element__like');
-
-  function handleLikeClick() {
-    like.classList.toggle('element__like_status_added');
-  }
-
-  like.addEventListener('click', handleLikeClick);
-}
-
-function addDeleteToElement(newElement) {
-  const deleteButton = newElement.querySelector('.element__delete-button');
-
-  function handleDeleteButtonClick() {
-    newElement.remove();
-  }
-
-  deleteButton.addEventListener('click', handleDeleteButtonClick);
-}
-
-function createElement(name, link) {
-  const elementTemplate = document.querySelector('.element_template');
-  const newElement = elementTemplate.cloneNode(true);
-
-  newElement.classList.remove('element_template');
-  newElement.querySelector('.element__photo').setAttribute('src', link);
-  newElement.querySelector('.element__photo').setAttribute('alt', name);
-  newElement.querySelector('.element__title').textContent = name;
-
-  return newElement;
-}
-
-function addModalToElement(newElement, name, link) {
-  const popupPhotoCard = document.querySelector('.popup__photo-card');
-  const openImagePopup = newElement.querySelector('.element__photo');
-  const popupImage = document.querySelector('.popup__image');
-  const popupImageDescription = document.querySelector('.popup__image-description');
-  const closePopupImage = document.querySelector('.popup__button-close_image');
-
-  function handleOpenImagePopupClick() {
-    popupImage.setAttribute('src', link);
-    popupImageDescription.textContent = name;
-
-    openModal(popupPhotoCard);
-  }
-
-  openImagePopup.addEventListener('click', handleOpenImagePopupClick);
-
-  addCloseModal(popupPhotoCard, closePopupImage);
-}
-
-function addElement(name, link, isPrepend) {
-  const newElement = createElement(name, link);
-
-  addLikeToElement(newElement);
-  addDeleteToElement(newElement);
-  addModalToElement(newElement, name, link);
-  addToDOM(isPrepend, newElement);
-}
-
 initialCards.forEach(
   function (initialCard) {
-    addElement(initialCard.name, initialCard.link, false);
+    const myCard = new Card(initialCard.name, initialCard.link, '.element_template', handleOpenImagePopupClick);
+    addToDOM(false, myCard.getElement());
   }
 );
 
-enableValidation({
-  formSelector: '.form',
+
+const config = {
   inputSelector: '.form__item',
   submitButtonSelector: '.form__button-save',
   inactiveButtonClass: 'form__button-save_disabled',
   inputErrorClass: 'form__item_type_error',
   errorClass: 'form__item-error'
-});
+}
+
+const saveProfileFormValidator = new FormValidator(config, document.querySelector('.form__save-profile'));
+const savePhotoFormValidator = new FormValidator(config, document.querySelector('.form__save_photo'));
+
+saveProfileFormValidator.enableValidation();
+savePhotoFormValidator.enableValidation();
