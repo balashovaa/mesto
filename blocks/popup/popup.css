@@ -1,6 +1,6 @@
 @import url('__button-close/popup__button-close.css');
 @import url('__image-description/popup__image-description.css');
-@import url('__photo-container/popup__photo-container.css');
+@import url('__container/popup__container.css');
 @import url('__image/popup__image.css');
 
 .popup {

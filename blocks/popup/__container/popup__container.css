@@ -1,4 +1,4 @@
-.popup__photo-container{
+.popup__container{
   display: flex;
   justify-content: space-around;
   flex-direction: column;

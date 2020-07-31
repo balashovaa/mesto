@@ -144,9 +144,9 @@ function handleOpenImagePopupClick(name, link) {
   openModal(popupPhotoCard);
 }
 
-
+const elementCards = document.querySelector('.element__cards');
 function addToDOM(isPrepend, newElement) {
-  const elementCards = document.querySelector('.element__cards');
+
 
   if (isPrepend) {
     elementCards.prepend(newElement);
