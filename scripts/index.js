@@ -1,5 +1,9 @@
 import Card from './Card.js';
-import FormValidator from './FormValidator.js';
+import PopupWithForm from './PopupWithForm.js';
+import PopupWithImage from './PopupWithImage.js';
+import UserInfo from "./UserInfo.js";
+import Section from "./Section.js";
+
 
 const initialCards = [
   {
@@ -28,151 +32,46 @@ const initialCards = [
   }
 ];
 
-
-const popupProfile = document.querySelector('.popup__profile');
-const popupAddPhoto = document.querySelector('.popup__photo');
-const openPopupProfile = document.querySelector('.profile__button-edite');
-const openPopupAddPhoto = document.querySelector('.profile__add-photo');
-const closePopupProfile = document.querySelector('.popup__button-close');
-const closePopupAddPhoto = document.querySelector('.popup__button-close_photo');
-const itemName = document.querySelector('.form__item_name');
-const itemDescription = document.querySelector('.form__item_description');
-const userName = document.querySelector('.profile__name');
-const userDescription = document.querySelector('.profile__description');
-const inputFormPlace = document.querySelector('.form__item_place');
-const inputFormPlaceLink = document.querySelector('.form__item_place-link');
-const savePopupProfile = document.querySelector('.form__save-profile');
-const savePhotoForm = document.querySelector('.form__save_photo');
-let popupOpen;
-
-itemName.value = userName.textContent;
-itemDescription.value = userDescription.textContent;
-
-function handleWindowKeyDown(event) {
-  if (event.key === 'Escape') {
-    closeModal(popupOpen)
-    window.removeEventListener('keydown', handleWindowKeyDown);
-  }
-}
-
-function openModal(modal) {
-  popupOpen = modal;
-  modal.classList.add('popup_open');
-  window.addEventListener('keydown', handleWindowKeyDown);
-}
-
-function addOpenModal(modal, element) {
-  function handleClick() {
-    openModal(modal);
-  }
-
-  element.addEventListener('click', handleClick);
-}
-
-addOpenModal(popupProfile, openPopupProfile);
-
-addOpenModal(popupAddPhoto, openPopupAddPhoto);
-
-function closeModal(modal) {
-  modal.classList.remove('popup_open');
-}
-
-function addCloseModal(modal, element) {
-  function handleClick(event) {
-    event.preventDefault();
-    closeModal(modal);
-  }
-
-  element.addEventListener('click', handleClick);
-}
-
-addCloseModal(popupProfile, closePopupProfile);
-addCloseModal(popupAddPhoto, closePopupAddPhoto);
-
-const popupList = document.querySelectorAll('.popup');
-
-function closePopupOnOverlayClick(event) {
-  if (event.target === event.currentTarget) {
-    closeModal(event.currentTarget);
-  }
-}
-
-popupList.forEach((popup) => {
-  popup.addEventListener('mousedown', closePopupOnOverlayClick);
-})
-
-
-function handleSaveProfileInfoClick(event) {
-  event.preventDefault();
-
-  userName.textContent = itemName.value;
-  userDescription.textContent = itemDescription.value;
-
-  closeModal(popupProfile);
-}
-
-savePopupProfile.addEventListener('submit', handleSaveProfileInfoClick);
-
-
-function handleSavePhotoClick(event) {
-  event.preventDefault();
-
-
-  const myCard = new Card(inputFormPlace.value, inputFormPlaceLink.value, '.element_template', handleOpenImagePopupClick);
-  addToDOM(true, myCard.getElement());
-  closeModal(popupAddPhoto);
-  inputFormPlace.value = '';
-  inputFormPlaceLink.value = '';
-
-  const button =  savePhotoForm.querySelector('.form__button-save');
-  button.setAttribute('disabled', 'disabled');
-  button.classList.add('form__button-save_disabled');
-}
-
-savePhotoForm.addEventListener('submit', handleSavePhotoClick);
-
-const popupPhotoCard = document.querySelector('.popup__photo-card');
-const popupImage = document.querySelector('.popup__image');
-const popupImageDescription = document.querySelector('.popup__image-description');
-const closePopupImage = document.querySelector('.popup__button-close_image');
-addCloseModal(popupPhotoCard, closePopupImage);
+const popupWithImage = new PopupWithImage('popup__photo-card');
+popupWithImage.setEventListeners();// непонятно зачем делать это здесь. Лучше сделать приватным методом и вызывать в конструкторе Popup
 
 function handleOpenImagePopupClick(name, link) {
-  popupImage.setAttribute('src', link);
-  popupImageDescription.textContent = name;
-
-  openModal(popupPhotoCard);
+  popupWithImage.open(name, link);
 }
 
-const elementCards = document.querySelector('.element__cards');
-function addToDOM(isPrepend, newElement) {
+const card = new Card('.element_template', handleOpenImagePopupClick);
 
-
-  if (isPrepend) {
-    elementCards.prepend(newElement);
-  } else {
-    elementCards.append(newElement);
-  }
+function renderer(item) {
+  return card.getElement(item.name, item.link);
 }
 
-initialCards.forEach(
-  function (initialCard) {
-    const myCard = new Card(initialCard.name, initialCard.link, '.element_template', handleOpenImagePopupClick);
-    addToDOM(false, myCard.getElement());
-  }
-);
+const section = new Section({items: initialCards, renderer: renderer}, '.element__cards');
+section.renderItems();
 
-
-const config = {
-  inputSelector: '.form__item',
-  submitButtonSelector: '.form__button-save',
-  inactiveButtonClass: 'form__button-save_disabled',
-  inputErrorClass: 'form__item_type_error',
-  errorClass: 'form__item-error'
+function onPhotoSubmit(formData) {
+  section.addItem(card.getElement(formData.get('place'), formData.get('place-link')));
 }
 
-const saveProfileFormValidator = new FormValidator(config, document.querySelector('.form__save-profile'));
-const savePhotoFormValidator = new FormValidator(config, document.querySelector('.form__save_photo'));
+const popupPhoto = new PopupWithForm('popup__photo', onPhotoSubmit);
+popupPhoto.setEventListeners();// непонятно зачем делать это здесь. Лучше сделать приватным методом и вызывать в конструкторе Popup
+document.querySelector('.profile__add-photo').addEventListener('click', () => {
+  popupPhoto.open();
+});
 
-saveProfileFormValidator.enableValidation();
-savePhotoFormValidator.enableValidation();
+const userInfo = new UserInfo({selectorName: 'profile__name', selectorDescription: 'profile__description'});
+
+function onProfileSubmit(formData) {
+  userInfo.setUserInfo({name: formData.get('name'), description: formData.get('description')});
+}
+
+const popupProfile = new PopupWithForm('popup__profile', onProfileSubmit);
+popupProfile.setEventListeners();// непонятно зачем делать это здесь. Лучше сделать приватным методом и вызывать в конструкторе Popup
+document.querySelector('.profile__button-edit').addEventListener('click', () => {
+  const data = userInfo.getUserInfo();
+
+  document.querySelector('.form__item_name').value = data.name;
+  document.querySelector('.form__item_name').dispatchEvent(new InputEvent('input'));
+  document.querySelector('.form__item_description').value = data.description;
+  document.querySelector('.form__item_description').dispatchEvent(new InputEvent('input'));
+  popupProfile.open();
+});

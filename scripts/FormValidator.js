@@ -1,10 +1,14 @@
 export default class {
   _formElement;
   _config;
+  _inputList;
+  _buttonElement;
 
   constructor(config, formElement) {
     this._config = config;
     this._formElement = formElement;
+    this._inputList = Array.from(this._formElement.querySelectorAll(this._config.inputSelector));
+    this._buttonElement = this._formElement.querySelector(this._config.submitButtonSelector);
   }
 
   enableValidation(){
@@ -12,31 +16,33 @@ export default class {
       event.preventDefault();
     });
 
+    this._formElement.addEventListener('reset', () => {
+      this._toggleButton();
+    });
+
     this._setEventListeners();
   }
 
   _setEventListeners () {
-    const inputList = Array.from(this._formElement.querySelectorAll(this._config.inputSelector));
-    const buttonElement = this._formElement.querySelector(this._config.submitButtonSelector);
 
-   this._toggleButton(inputList, buttonElement);
+   this._toggleButton();
 
-    inputList.forEach((formInput) => {
+    this._inputList.forEach((formInput) => {
       formInput.addEventListener('input', () => {
         this._checkValid(formInput);
 
-        this._toggleButton(inputList, buttonElement);
+        this._toggleButton();
       });
     });
   }
 
-  _toggleButton(inputList, buttonElement) {
-    if (this._isInvalidInput(inputList)) {
-      buttonElement.classList.add(this._config.inactiveButtonClass);
-      buttonElement.setAttribute('disabled', 'disabled');
+  _toggleButton() {
+    if (this._isInvalidInput()) {
+      this._buttonElement.classList.add(this._config.inactiveButtonClass);
+      this._buttonElement.setAttribute('disabled', 'disabled');
     } else {
-      buttonElement.classList.remove(this._config.inactiveButtonClass);
-      buttonElement.removeAttribute('disabled', 'disabled');
+      this._buttonElement.classList.remove(this._config.inactiveButtonClass);
+      this._buttonElement.removeAttribute('disabled', 'disabled');
     }
   }
 
@@ -64,8 +70,8 @@ export default class {
     formError.classList.remove(this._config.errorClass);
   }
 
-  _isInvalidInput(inputList) {
-    return inputList.some((inputElement) => {
+  _isInvalidInput() {
+    return this._inputList.some((inputElement) => {
       return !inputElement.validity.valid;
     });
   }

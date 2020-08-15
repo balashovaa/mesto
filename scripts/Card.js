@@ -1,33 +1,22 @@
-export default class {
-  _link;
-  _name;
+export default class Card {
   _selectorTemplateElement;
-  _element;
-  _photoClickCallback;
+  _handleCardClick;
 
-  constructor(name, link, selectorTemplateElement, photoClickCallback) {
-    this._name = name;
-    this._link = link;
+  constructor( selectorTemplateElement, handleCardClick) {
     this._selectorTemplateElement = selectorTemplateElement;
-    this._photoClickCallback = photoClickCallback;
-
-    this._element = this._createElement();
+    this._handleCardClick = handleCardClick;
   }
 
-  getElement() {
-    return this._element;
-  }
-
-  _createElement() {
+  getElement(name, link) {
     const elementTemplate = document.querySelector(this._selectorTemplateElement);
     const newElement = elementTemplate.cloneNode(true);
 
     newElement.classList.remove('element_template');
-    newElement.querySelector('.element__photo').setAttribute('src', this._link);
-    newElement.querySelector('.element__photo').setAttribute('alt', this._name);
-    newElement.querySelector('.element__title').textContent = this._name;
+    newElement.querySelector('.element__photo').setAttribute('src', link);
+    newElement.querySelector('.element__photo').setAttribute('alt', name);
+    newElement.querySelector('.element__title').textContent = name;
     newElement.querySelector('.element__photo').addEventListener('click', () => {
-      this._photoClickCallback(this._name, this._link);
+      this._handleCardClick(name, link);
     });
     this._addLikeToElement(newElement);
     this._addDeleteToElement(newElement);
