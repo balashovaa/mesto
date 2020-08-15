@@ -4,3 +4,4 @@
 # npm vendor dir
 node_modules
 package-lock.json
+dist
