@@ -1,7 +1,4 @@
 export default class Card {
-  _selectorTemplateElement;
-  _handleCardClick;
-
   constructor( selectorTemplateElement, handleCardClick) {
     this._selectorTemplateElement = selectorTemplateElement;
     this._handleCardClick = handleCardClick;

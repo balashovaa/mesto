@@ -1,7 +1,4 @@
 export default class Popup {
-  _popupElement;
-
-
   constructor(selector) {
     this._popupElement = document.querySelector(`.${selector}`);
     this._popupElement.addEventListener('mousedown', (event) => {

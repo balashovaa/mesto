@@ -1,9 +1,4 @@
-export default class {
-  _formElement;
-  _config;
-  _inputList;
-  _buttonElement;
-
+export default class FormValidator {
   constructor(config, formElement) {
     this._config = config;
     this._formElement = formElement;
@@ -11,7 +6,7 @@ export default class {
     this._buttonElement = this._formElement.querySelector(this._config.submitButtonSelector);
   }
 
-  enableValidation(){
+  enableValidation() {
     this._formElement.addEventListener('submit', (event) => {
       event.preventDefault();
     });
@@ -23,9 +18,9 @@ export default class {
     this._setEventListeners();
   }
 
-  _setEventListeners () {
+  _setEventListeners() {
 
-   this._toggleButton();
+    this._toggleButton();
 
     this._inputList.forEach((formInput) => {
       formInput.addEventListener('input', () => {
@@ -46,7 +41,7 @@ export default class {
     }
   }
 
-  _checkValid  (formInput)  {
+  _checkValid(formInput) {
     if (formInput.validity.valid) {
       this._hideInputError(formInput);
     } else {
@@ -54,7 +49,7 @@ export default class {
     }
   }
 
-  _showInputError (formInput, errorMessage) {
+  _showInputError(formInput, errorMessage) {
     const formError = this._formElement.querySelector(`#${formInput.id}-error`);
 
     formInput.classList.add(this._config.inputErrorClass);
@@ -62,7 +57,7 @@ export default class {
     formError.classList.add(this._config.errorClass);
   }
 
-  _hideInputError (formInput) {
+  _hideInputError(formInput) {
     const formError = this._formElement.querySelector(`#${formInput.id}-error`);
 
     formInput.classList.remove(this._config.inputErrorClass);
