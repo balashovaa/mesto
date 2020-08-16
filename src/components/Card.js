@@ -1,5 +1,5 @@
 export default class Card {
-  constructor( selectorTemplateElement, handleCardClick) {
+  constructor(selectorTemplateElement, handleCardClick) {
     this._selectorTemplateElement = selectorTemplateElement;
     this._handleCardClick = handleCardClick;
   }
@@ -7,12 +7,12 @@ export default class Card {
   getElement(name, link) {
     const elementTemplate = document.querySelector(this._selectorTemplateElement);
     const newElement = elementTemplate.cloneNode(true);
-
+    const elementPhoto = newElement.querySelector('.element__photo');
     newElement.classList.remove('element_template');
-    newElement.querySelector('.element__photo').setAttribute('src', link);
-    newElement.querySelector('.element__photo').setAttribute('alt', name);
+    elementPhoto.setAttribute('src', link);
+    elementPhoto.setAttribute('alt', name);
     newElement.querySelector('.element__title').textContent = name;
-    newElement.querySelector('.element__photo').addEventListener('click', () => {
+    elementPhoto.addEventListener('click', () => {
       this._handleCardClick(name, link);
     });
     this._addLikeToElement(newElement);

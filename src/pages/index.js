@@ -54,8 +54,9 @@ function onPhotoSubmit(formData) {
 }
 
 const popupPhoto = new PopupWithForm('popup__photo', onPhotoSubmit);
+const profileAddPhoto = document.querySelector('.profile__add-photo');
 popupPhoto.setEventListeners();// непонятно зачем делать это здесь. Лучше сделать приватным методом и вызывать в конструкторе Popup
-document.querySelector('.profile__add-photo').addEventListener('click', () => {
+profileAddPhoto.addEventListener('click', () => {
   popupPhoto.open();
 });
 
@@ -66,8 +67,9 @@ function onProfileSubmit(formData) {
 }
 
 const popupProfile = new PopupWithForm('popup__profile', onProfileSubmit);
+const profileButtonEdit = document.querySelector('.profile__button-edit');
 popupProfile.setEventListeners();// непонятно зачем делать это здесь. Лучше сделать приватным методом и вызывать в конструкторе Popup
-document.querySelector('.profile__button-edit').addEventListener('click', () => {
+profileButtonEdit.addEventListener('click', () => {
   const data = userInfo.getUserInfo();
 
   document.querySelector('.form__item_name').value = data.name;
