@@ -4,6 +4,7 @@ import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import UserInfo from "../components/UserInfo.js";
 import Section from "../components/Section.js";
+import FormValidator from "../components/FormValidator.js";
 
 
 const initialCards = [
@@ -78,3 +79,17 @@ profileButtonEdit.addEventListener('click', () => {
   document.querySelector('.form__item_description').dispatchEvent(new InputEvent('input'));
   popupProfile.open();
 });
+
+const config = {
+  inputSelector: '.form__item',
+  submitButtonSelector: '.form__button-save',
+  inactiveButtonClass: 'form__button-save_disabled',
+  inputErrorClass: 'form__item_type_error',
+  errorClass: 'form__item-error'
+}
+
+const saveProfileFormValidator = new FormValidator(config, document.querySelector('.form__save-profile'));
+const savePhotoFormValidator = new FormValidator(config, document.querySelector('.form__save_photo'));
+
+saveProfileFormValidator.enableValidation();
+savePhotoFormValidator.enableValidation();

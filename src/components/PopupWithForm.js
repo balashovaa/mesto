@@ -1,5 +1,4 @@
 import Popup from './Popup.js';
-import FormValidator from "./FormValidator.js";
 
 export default class PopupWithForm extends Popup {
   constructor(selector, callbackFormSubmit) {
@@ -7,16 +6,6 @@ export default class PopupWithForm extends Popup {
 
     this._callbackFormSubmit = callbackFormSubmit;
     this._form = this._popupElement.querySelector('form');
-    this._formValidator = new FormValidator(
-      {
-        inputSelector: '.form__item',
-        submitButtonSelector: '.form__button-save',
-        inactiveButtonClass: 'form__button-save_disabled',
-        inputErrorClass: 'form__item_type_error',
-        errorClass: 'form__item-error'
-      },
-      this._form);
-    this._formValidator.enableValidation();
   }
 
 
