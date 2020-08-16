@@ -67,16 +67,19 @@ function onProfileSubmit(formData) {
   userInfo.setUserInfo({name: formData.get('name'), description: formData.get('description')});
 }
 
+const formItemName = document.querySelector('.form__item_name');
+const formItemDescription = document.querySelector('.form__item_description');
+
 const popupProfile = new PopupWithForm('popup__profile', onProfileSubmit);
 const profileButtonEdit = document.querySelector('.profile__button-edit');
 popupProfile.setEventListeners();// непонятно зачем делать это здесь. Лучше сделать приватным методом и вызывать в конструкторе Popup
 profileButtonEdit.addEventListener('click', () => {
   const data = userInfo.getUserInfo();
 
-  document.querySelector('.form__item_name').value = data.name;
-  document.querySelector('.form__item_name').dispatchEvent(new InputEvent('input'));
-  document.querySelector('.form__item_description').value = data.description;
-  document.querySelector('.form__item_description').dispatchEvent(new InputEvent('input'));
+  formItemName.value = data.name;
+  formItemName.dispatchEvent(new InputEvent('input'));
+  formItemDescription.value = data.description;
+  formItemDescription.dispatchEvent(new InputEvent('input'));
   popupProfile.open();
 });
 
