@@ -6,14 +6,13 @@ export default class Popup {
         this.close();
       }
     });
+    this._escHandler = (event) => {
+      this._handleEscClose(event);
+    };
   }
 
   open() {
     this._popupElement.classList.add('popup_open');
-// @todo: Эта функция является лишней, т.к. вы сразу можете добавлять и удалять слушатель передавая колбэком  функцию _handleEscClose
-    this._escHandler = (event) => {
-      this._handleEscClose(event);
-    };
     window.addEventListener('keydown', this._escHandler);
   }
 
