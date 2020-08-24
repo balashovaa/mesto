@@ -10,27 +10,39 @@ import FormValidator from "../components/FormValidator.js";
 const initialCards = [
   {
     name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg',
+    likes: [1,2,3],
+    is_deletable: true
   },
   {
     name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg',
+    likes: [3],
+    is_deletable: false
   },
   {
     name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg',
+    likes: [2,3],
+    is_deletable: true
   },
   {
     name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg',
+    likes: [2],
+    is_deletable: false
   },
   {
     name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg',
+    likes: [1],
+    is_deletable: false
   },
   {
     name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg',
+    likes: [],
+    is_deletable: true
   }
 ];
 
@@ -44,15 +56,30 @@ function handleOpenImagePopupClick(name, link) {
 const card = new Card('.element_template', handleOpenImagePopupClick);
 
 function renderer(item) {
-  return card.getElement(item.name, item.link);
+  return card.getElement(item.name, item.link, item.likes, item.is_deletable);
 }
 
 const section = new Section({items: initialCards, renderer: renderer}, '.element__cards');
 section.renderItems();
 
 function onPhotoSubmit(formData) {
-  section.addItem(card.getElement(formData.get('place'), formData.get('place-link')));
+  section.addItem(card.getElement(formData.get('place'), formData.get('place-link'), [], true));
 }
+
+
+const avatarPhoto = document.querySelector('.profile__photo');
+
+function onUpdateAvatar(formData){
+  avatarPhoto.setAttribute('src', formData.get('avatar-link'));
+}
+
+const popupAvatar = new PopupWithForm('popup__avatar', onUpdateAvatar);
+const popupEditAvatarButton = document.querySelector('.profile__avatar-edit');
+popupAvatar.setEventListeners();
+popupEditAvatarButton.addEventListener('click', () => {
+  popupAvatar.open()
+})
+
 
 const popupPhoto = new PopupWithForm('popup__photo', onPhotoSubmit);
 const profileAddPhoto = document.querySelector('.profile__add-photo');
@@ -93,6 +120,8 @@ const config = {
 
 const saveProfileFormValidator = new FormValidator(config, document.querySelector('.form__save-profile'));
 const savePhotoFormValidator = new FormValidator(config, document.querySelector('.form__save_photo'));
+const saveAvatarPhotoFormValidator = new FormValidator(config, document.querySelector('.form__save-avatar'));
 
 saveProfileFormValidator.enableValidation();
 savePhotoFormValidator.enableValidation();
+saveAvatarPhotoFormValidator.enableValidation();

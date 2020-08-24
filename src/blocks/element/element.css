@@ -6,6 +6,8 @@
 @import url('__cards/element__cards.css');
 @import url('_template/element_template.css');
 @import url('__delete-button/element__delete-button.css');
+@import url('__likes-number/.element__likes-number.css');
+@import url('__delete-button/_deletable/element__delete-button_deletable.css');
 
 .element{
   background-color: white;

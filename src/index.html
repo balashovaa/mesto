@@ -15,7 +15,10 @@
   <main>
     <section class="profile">
       <div class="profile__card">
-        <img class="profile__avatar" src="images/avatar.jpg" alt="фото профиля">
+        <div class="profile__avatar">
+          <img class="profile__photo" src="./images/avatar.jpg" alt="фото профиля">
+          <button class="profile__avatar-edit"></button>
+        </div>
         <div class="profile__info">
           <div class="profile__wrapper">
             <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -33,7 +36,7 @@
           <button class="element__delete-button"></button>
           <div class="element__info">
             <h2 class="element__title"></h2>
-            <button class="element__like" type="button"></button>
+            <button class="element__like" type="button"><span class="element__likes-number">0</span></button>
           </div>
         </li>
       </ul>
@@ -80,6 +83,29 @@
     <button class="popup__button-close popup__button-close_image"></button>
     <img class="popup__image" src="#" alt="">
     <p class="popup__image-description"></p>
+  </div>
+</div>
+
+<div class="popup popup__avatar">
+  <div class="popup__container">
+    <button class="popup__button-close"></button>
+    <form class="form form__save-avatar" name="popupAvatar" autocomplete="off" novalidate>
+      <h2 class="form__title">Обновить аватар</h2>
+      <input id="avatar-link-input" type="url" class="form__item form__item_avatar-link" name="avatar-link"
+             placeholder="Ссылка на изображение" required>
+      <span id="avatar-link-input-error" class="form__item-error"></span>
+      <button type="submit" class="form__button-save">Сохранить</button>
+    </form>
+  </div>
+</div>
+
+<div class="popup popup__confirm-delete">
+  <div class="popup__container">
+    <button class="popup__button-close"></button>
+    <form class="form">
+      <h2 class="form__title">Вы уверены?</h2>
+      <button type="submit" class="form__button-save">Да</button>
+    </form>
   </div>
 </div>
 </body>
