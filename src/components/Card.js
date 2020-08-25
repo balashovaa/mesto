@@ -3,19 +3,16 @@ import PopupWithForm from "./PopupWithForm.js";
 let cardToDelete;
 let _api;
 
-function onConfirmDelete() {
-  _api.removeCard(1, onRemoveCardSuccess, onRemoveCardError);
+function onConfirmDelete(formData, onSuccess, onError) {
+  _api.removeCard(1, onRemoveCardSuccess, onError);
 
   function onRemoveCardSuccess(){
     cardToDelete.remove();
-  }
-
-  function onRemoveCardError(errorMessage){
-    alert(errorMessage);
+    onSuccess();
   }
 }
 
-const popupConfirmDelete = new PopupWithForm('popup__confirm-delete', onConfirmDelete);
+const popupConfirmDelete = new PopupWithForm('popup__confirm-delete', onConfirmDelete, 'Удаление...');
 popupConfirmDelete.setEventListeners();
 
 

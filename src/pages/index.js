@@ -36,22 +36,19 @@ function onInitialCardsSuccess(listOfCard) {
   const section = new Section({items: listOfCard, renderer: renderer}, '.element__cards');
   section.renderItems();
 
-  function onPhotoSubmit(formData) {
+  function onPhotoSubmit(formData, onSuccess, onError) {
     api.addingNewCard({
       name: formData.get('place'),
       link: formData.get('place-link')
-    }, onAddingNewCardSuccess, onAddingNewCardError);
+    }, onAddingNewCardSuccess, onError);
 
     function onAddingNewCardSuccess(){
       section.addItem(card.getElement(formData.get('place'), formData.get('place-link'), [], true));
-    }
-
-    function onAddingNewCardError(errorMessage){
-      alert(errorMessage);
+      onSuccess();
     }
   }
 
-  const popupPhoto = new PopupWithForm('popup__photo', onPhotoSubmit);
+  const popupPhoto = new PopupWithForm('popup__photo', onPhotoSubmit, 'Сохранение...');
   const profileAddPhoto = document.querySelector('.profile__add-photo');
   popupPhoto.setEventListeners();// непонятно зачем делать это здесь. Лучше сделать приватным методом и вызывать в конструкторе Popup
   profileAddPhoto.addEventListener('click', () => {
@@ -74,25 +71,22 @@ function onLoadingUserInformationSuccess(user) {
   avatarPhoto.setAttribute('src', user.avatar);
 
 
-  function onProfileSubmit(formData) {
+  function onProfileSubmit(formData, onSuccess, onError) {
     api.profileEditing({
       name: formData.get('name'),
       about: formData.get('description')
-    }, onProfileSubmitSuccess, onProfileSubmitError);
+    }, onProfileSubmitSuccess, onError);
 
     function onProfileSubmitSuccess(){
       userInfo.setUserInfo({name: formData.get('name'), description: formData.get('description')});
-    }
-
-    function onProfileSubmitError(errorMessage){
-      alert(errorMessage);
+      onSuccess();
     }
   }
 
   const formItemName = document.querySelector('.form__item_name');
   const formItemDescription = document.querySelector('.form__item_description');
 
-  const popupProfile = new PopupWithForm('popup__profile', onProfileSubmit);
+  const popupProfile = new PopupWithForm('popup__profile', onProfileSubmit, 'Сохранение...');
   const profileButtonEdit = document.querySelector('.profile__button-edit');
   popupProfile.setEventListeners();// непонятно зачем делать это здесь. Лучше сделать приватным методом и вызывать в конструкторе Popup
   profileButtonEdit.addEventListener('click', () => {
@@ -106,19 +100,16 @@ function onLoadingUserInformationSuccess(user) {
   });
 
 
-  function onUpdateAvatar(formData) {
-    api.updatingUserAvatar(formData.get('avatar-link'), onUpdatingUserAvatarSuccess, onUpdatingUserAvatarError);
+  function onUpdateAvatar(formData, onSuccess, onError) {
+    api.updatingUserAvatar(formData.get('avatar-link'), onUpdatingUserAvatarSuccess, onError);
 
     function onUpdatingUserAvatarSuccess(){
       avatarPhoto.setAttribute('src', formData.get('avatar-link'));
-    }
-
-    function onUpdatingUserAvatarError(errorMessage){
-      alert(errorMessage);
+      onSuccess();
     }
   }
 
-  const popupAvatar = new PopupWithForm('popup__avatar', onUpdateAvatar);
+  const popupAvatar = new PopupWithForm('popup__avatar', onUpdateAvatar, 'Сохранение...');
   const popupEditAvatarButton = document.querySelector('.profile__avatar-edit');
   popupAvatar.setEventListeners();
   popupEditAvatarButton.addEventListener('click', () => {

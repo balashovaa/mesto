@@ -61,7 +61,7 @@ export default class Api {
   profileEditing(user, onSuccess, onError) {
     setTimeout(() => {
       onSuccess();
-    }, 1000);
+    }, 5000);
   }
 
   addingNewCard(card, onSuccess, onError) {
