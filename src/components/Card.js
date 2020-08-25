@@ -1,9 +1,18 @@
 import PopupWithForm from "./PopupWithForm.js";
 
 let cardToDelete;
+let _api;
 
 function onConfirmDelete() {
-  cardToDelete.remove();
+  _api.removeCard(1, onRemoveCardSuccess, onRemoveCardError);
+
+  function onRemoveCardSuccess(){
+    cardToDelete.remove();
+  }
+
+  function onRemoveCardError(errorMessage){
+    alert(errorMessage);
+  }
 }
 
 const popupConfirmDelete = new PopupWithForm('popup__confirm-delete', onConfirmDelete);
@@ -11,9 +20,10 @@ popupConfirmDelete.setEventListeners();
 
 
 export default class Card {
-  constructor(selectorTemplateElement, handleCardClick) {
+  constructor(selectorTemplateElement, handleCardClick, api) {
     this._selectorTemplateElement = selectorTemplateElement;
     this._handleCardClick = handleCardClick;
+    _api = api;
   }
 
   getElement(name, link, likes, is_deletable) {
@@ -45,13 +55,45 @@ export default class Card {
     const like = newElement.querySelector('.element__like');
 
     function handleLikeClick() {
-      if (like.classList.contains('element__like_status_added')) {
-        likesNumberOfNewElement.textContent--;
-      } else {
+      if (like.classList.contains('element__like_status_request-send') === false) {
+        like.classList.add('element__like_status_request-send');
+
+        if (like.classList.contains('element__like_status_added')) {
+          removingLike();
+        } else {
+          likeSetting();
+        }
+      }
+    }
+
+    function likeSetting(){
+      _api.likeSetting(1, onLikeSettingSuccess, onLikeSettingError, onLikeAlways);
+
+      function onLikeSettingSuccess(){
         likesNumberOfNewElement.textContent++;
+        like.classList.toggle('element__like_status_added');
       }
 
-      like.classList.toggle('element__like_status_added');
+      function onLikeSettingError(errorMessage){
+        alert(errorMessage);
+      }
+    }
+
+    function removingLike(){
+      _api.removingLike(1, onRemovingLikeSuccess, onRemovingLikeError, onLikeAlways)
+
+      function onRemovingLikeSuccess(){
+        likesNumberOfNewElement.textContent--;
+        like.classList.toggle('element__like_status_added');
+      }
+
+      function onRemovingLikeError(errorMessage){
+        alert(errorMessage);
+      }
+    }
+
+    function onLikeAlways() {
+      like.classList.remove('element__like_status_request-send');
     }
 
     like.addEventListener('click', handleLikeClick);
