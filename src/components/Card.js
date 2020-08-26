@@ -60,18 +60,8 @@ export default class Card {
 
 
     fill(item.likes);
+    like.addEventListener('click', handleLikeClick);
 
-    function handleLikeClick() {
-      if (like.classList.contains('element__like_status_request-send') === false) {
-        like.classList.add('element__like_status_request-send');
-
-        if (like.classList.contains('element__like_status_added')) {
-          removingLike();
-        } else {
-          likeSetting();
-        }
-      }
-    }
 
     function fill(likes) {
       let isILiked = false;
@@ -91,6 +81,18 @@ export default class Card {
       }
 
       likesNumberOfNewElement.textContent = likes.length;
+    }
+
+    function handleLikeClick() {
+      if (like.classList.contains('element__like_status_request-send') === false) {
+        like.classList.add('element__like_status_request-send');
+
+        if (like.classList.contains('element__like_status_added')) {
+          removingLike();
+        } else {
+          likeSetting();
+        }
+      }
     }
 
     function likeSetting() {
@@ -120,8 +122,6 @@ export default class Card {
     function onLikeAlways() {
       like.classList.remove('element__like_status_request-send');
     }
-
-    like.addEventListener('click', handleLikeClick);
   }
 
   _addDeleteToElement(newElement, item) {

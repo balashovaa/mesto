@@ -1,90 +1,99 @@
 import './index.css';
+import Api from "../components/Api.js";
 import Card from '../components/Card.js';
+import FormValidator from "../components/FormValidator.js";
 import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
-import UserInfo from "../components/UserInfo.js";
 import Section from "../components/Section.js";
-import FormValidator from "../components/FormValidator.js";
-import Api from "../components/Api.js";
+import UserInfo from "../components/UserInfo.js";
 
 
+// Блок декларирования переменных
 const api = new Api('f9d0b5b2-0cc9-4d30-9246-1c45800f0e24');
 const card = new Card('.element_template', handleOpenImagePopupClick, api);
+const userInfo = new UserInfo({selectorName: 'profile__name', selectorDescription: 'profile__description'});
+const avatarPhoto = document.querySelector('.profile__photo');
+const formItemName = document.querySelector('.form__item_name');
+const formItemDescription = document.querySelector('.form__item_description');
+const profileButtonEdit = document.querySelector('.profile__button-edit');
+const popupAvatar = new PopupWithForm('popup__avatar', onUpdateAvatar, 'Сохранение...');
+const popupEditAvatarButton = document.querySelector('.profile__avatar-edit');
+const popupProfile = new PopupWithForm('popup__profile', onProfileSubmit, 'Сохранение...');
+const popupWithImage = new PopupWithImage('popup__photo-card');
+const config = {
+  inputSelector: '.form__item',
+  submitButtonSelector: '.form__button-save',
+  inactiveButtonClass: 'form__button-save_disabled',
+  inputErrorClass: 'form__item_type_error',
+  errorClass: 'form__item-error'
+}
+const saveProfileFormValidator = new FormValidator(config, document.querySelector('.form__save-profile'));
+const savePhotoFormValidator = new FormValidator(config, document.querySelector('.form__save_photo'));
+const saveAvatarPhotoFormValidator = new FormValidator(config, document.querySelector('.form__save-avatar'));
 
 
+// Блок логики
 api.loadingUserInformation(onLoadingUserInformationSuccess, onLoadingUserInformationError);
+popupAvatar.setEventListeners();
+popupProfile.setEventListeners();
+popupWithImage.setEventListeners();
+profileButtonEdit.addEventListener('click', onClickProfileButtonEdit);
+popupEditAvatarButton.addEventListener('click', onClickPopupEditAvatarButton);
+savePhotoFormValidator.enableValidation();
+saveProfileFormValidator.enableValidation();
+saveAvatarPhotoFormValidator.enableValidation();
+
+
+// Блок обработчиков событий
+function onClickPopupEditAvatarButton() {
+  popupAvatar.open();
+}
+
+function onClickProfileButtonEdit() {
+  const data = userInfo.getUserInfo();
+
+  formItemName.value = data.name;
+  formItemName.dispatchEvent(new InputEvent('input'));
+  formItemDescription.value = data.description;
+  formItemDescription.dispatchEvent(new InputEvent('input'));
+  popupProfile.open();
+}
 
 function onLoadingUserInformationSuccess(user) {
-  const userInfo = new UserInfo({selectorName: 'profile__name', selectorDescription: 'profile__description'});
-  const avatarPhoto = document.querySelector('.profile__photo');
-
-
   userInfo.setUserInfo({name: user.name, description: user.about});
   avatarPhoto.setAttribute('src', user.avatar);
-
-
-  function onProfileSubmit(formData, onSuccess, onError) {
-    api.profileEditing({
-      name: formData.get('name'),
-      about: formData.get('description')
-    }, onProfileSubmitSuccess, onError);
-
-    function onProfileSubmitSuccess(){
-      userInfo.setUserInfo({name: formData.get('name'), description: formData.get('description')});
-      onSuccess();
-    }
-  }
-
-  const formItemName = document.querySelector('.form__item_name');
-  const formItemDescription = document.querySelector('.form__item_description');
-
-  const popupProfile = new PopupWithForm('popup__profile', onProfileSubmit, 'Сохранение...');
-  const profileButtonEdit = document.querySelector('.profile__button-edit');
-  popupProfile.setEventListeners();// непонятно зачем делать это здесь. Лучше сделать приватным методом и вызывать в конструкторе Popup
-  profileButtonEdit.addEventListener('click', () => {
-    const data = userInfo.getUserInfo();
-
-    formItemName.value = data.name;
-    formItemName.dispatchEvent(new InputEvent('input'));
-    formItemDescription.value = data.description;
-    formItemDescription.dispatchEvent(new InputEvent('input'));
-    popupProfile.open();
-  });
-
-
-  function onUpdateAvatar(formData, onSuccess, onError) {
-    api.updatingUserAvatar(formData.get('avatar-link'), onUpdatingUserAvatarSuccess, onError);
-
-    function onUpdatingUserAvatarSuccess(){
-      avatarPhoto.setAttribute('src', formData.get('avatar-link'));
-      onSuccess();
-    }
-  }
-
-  const popupAvatar = new PopupWithForm('popup__avatar', onUpdateAvatar, 'Сохранение...');
-  const popupEditAvatarButton = document.querySelector('.profile__avatar-edit');
-  popupAvatar.setEventListeners();
-  popupEditAvatarButton.addEventListener('click', () => {
-    popupAvatar.open()
-  });
-
   card.setUserId(user._id);
   api.getInitialCards(onInitialCardsSuccess, onInitialCardsError);
+}
+
+function onProfileSubmit(formData, onSuccess, onError) {
+  api.profileEditing({
+    name: formData.get('name'),
+    about: formData.get('description')
+  }, onProfileSubmitSuccess, onError);
+
+  function onProfileSubmitSuccess() {
+    userInfo.setUserInfo({name: formData.get('name'), description: formData.get('description')});
+    onSuccess();
+  }
+}
+
+function onUpdateAvatar(formData, onSuccess, onError) {
+  api.updatingUserAvatar(formData.get('avatar-link'), onUpdatingUserAvatarSuccess, onError);
+
+  function onUpdatingUserAvatarSuccess() {
+    avatarPhoto.setAttribute('src', formData.get('avatar-link'));
+    onSuccess();
+  }
 }
 
 function onLoadingUserInformationError(errorMessage) {
   alert(errorMessage);
 }
 
-
-
-const popupWithImage = new PopupWithImage('popup__photo-card');
-popupWithImage.setEventListeners();// непонятно зачем делать это здесь. Лучше сделать приватным методом и вызывать в конструкторе Popup
-
 function handleOpenImagePopupClick(name, link) {
   popupWithImage.open(name, link);
 }
-
 
 function renderer(item) {
   return card.getElement(item);
@@ -100,7 +109,7 @@ function onInitialCardsSuccess(listOfCard) {
       link: formData.get('place-link')
     }, onAddingNewCardSuccess, onError);
 
-    function onAddingNewCardSuccess(item){
+    function onAddingNewCardSuccess(item) {
       section.addItem(card.getElement(item));
       onSuccess();
     }
@@ -117,26 +126,3 @@ function onInitialCardsSuccess(listOfCard) {
 function onInitialCardsError(errorMessage) {
   alert(errorMessage);
 }
-
-
-
-
-
-
-
-
-const config = {
-  inputSelector: '.form__item',
-  submitButtonSelector: '.form__button-save',
-  inactiveButtonClass: 'form__button-save_disabled',
-  inputErrorClass: 'form__item_type_error',
-  errorClass: 'form__item-error'
-}
-
-const saveProfileFormValidator = new FormValidator(config, document.querySelector('.form__save-profile'));
-const savePhotoFormValidator = new FormValidator(config, document.querySelector('.form__save_photo'));
-const saveAvatarPhotoFormValidator = new FormValidator(config, document.querySelector('.form__save-avatar'));
-
-saveProfileFormValidator.enableValidation();
-savePhotoFormValidator.enableValidation();
-saveAvatarPhotoFormValidator.enableValidation();
