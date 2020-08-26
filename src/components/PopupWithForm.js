@@ -41,11 +41,13 @@ export default class PopupWithForm extends Popup {
     this._callbackFormSubmit(
       formData,
       () => {
-        this.close();
         buttonSubmit.textContent = prevLabel;
         this._enableForm();
+        this.close();
       },
       (errorMessage) => {
+        buttonSubmit.textContent = prevLabel;
+        this._enableForm();
         alert(errorMessage);
       });
   }

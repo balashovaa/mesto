@@ -72,8 +72,13 @@ export default class Api {
     }
 
     fetch(`https://mesto.nomoreparties.co/v1/cohort-14/${partOfPath}`, init)
-      .then((res) => {
-        return res.json();
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+
+        // если ошибка, отклоняем промис
+        return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then((data) => {
         onSuccess(data);
