@@ -8,13 +8,7 @@ import FormValidator from "../components/FormValidator.js";
 import Api from "../components/Api.js";
 
 
-const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-14',
-  headers: {
-    authorization: 'f9d0b5b2-0cc9-4d30-9246-1c45800f0e24',
-    'Content-Type': 'application/json'
-  }
-});
+const api = new Api('f9d0b5b2-0cc9-4d30-9246-1c45800f0e24');
 const card = new Card('.element_template', handleOpenImagePopupClick, api);
 
 

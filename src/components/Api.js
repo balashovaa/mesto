@@ -1,132 +1,77 @@
 export default class Api {
-  constructor(options) {
-
+  constructor(token) {
+    this._token = token;
   }
 
   getInitialCards(onSuccess, onError) {
-    fetch('https://mesto.nomoreparties.co/v1/cohort-14/cards', {
-      headers: {
-        authorization: 'f9d0b5b2-0cc9-4d30-9246-1c45800f0e24'
-      }
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        onSuccess(data);
-      })
-      .catch((err) => {
-        onError(err);
-      });
+    this._requestWithoutBodyWithoutAlways('cards', 'GET', onSuccess, onError);
   }
 
   loadingUserInformation(onSuccess, onError) {
-    fetch('https://mesto.nomoreparties.co/v1/cohort-14/users/me', {
-      headers: {
-        authorization: 'f9d0b5b2-0cc9-4d30-9246-1c45800f0e24'
-      }
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        onSuccess(data);
-      })
-      .catch((err) => {
-        onError(err);
-      });
+    this._requestWithoutBodyWithoutAlways('users/me', 'GET', onSuccess, onError);
   }
 
   profileEditing(user, onSuccess, onError) {
-    fetch('https://mesto.nomoreparties.co/v1/cohort-14/users/me', {
-      method: 'PATCH',
-      headers: {
-        authorization: 'f9d0b5b2-0cc9-4d30-9246-1c45800f0e24',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: user.name,
-        about: user.about
-      })
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        onSuccess(data);
-      })
-      .catch((err) => {
-        onError(err);
-      });
+    this._requestWithBody('users/me', {
+      name: user.name,
+      about: user.about
+    }, 'PATCH', onSuccess, onError);
   }
 
   addingNewCard(card, onSuccess, onError) {
-    fetch('https://mesto.nomoreparties.co/v1/cohort-14/cards', {
-      method: 'POST',
-      headers: {
-        authorization: 'f9d0b5b2-0cc9-4d30-9246-1c45800f0e24',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: card.name,
-        link: card.link
-      })
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        onSuccess(data);
-      })
-      .catch((err) => {
-        onError(err);
-      });
+    this._requestWithBody('cards', {
+      name: card.name,
+      link: card.link
+    }, 'POST', onSuccess, onError);
   }
 
   removeCard(cardId, onSuccess, onError) {
-    fetch(`https://mesto.nomoreparties.co/v1/cohort-14/cards/${cardId}`, {
-      method: 'DELETE',
-      headers: {
-        authorization: 'f9d0b5b2-0cc9-4d30-9246-1c45800f0e24'
-      }
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        onSuccess(data);
-      })
-      .catch((err) => {
-        onError(err);
-      });
+    this._requestWithoutBodyWithoutAlways(`cards/${cardId}`, 'DELETE', onSuccess, onError);
   }
 
   likeSetting(cardId, onSuccess, onError, onAlways) {
-    fetch(`https://mesto.nomoreparties.co/v1/cohort-14/cards/likes/${cardId}`, {
-      method: 'PUT',
-      headers: {
-        authorization: 'f9d0b5b2-0cc9-4d30-9246-1c45800f0e24'
-      }
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        onSuccess(data);
-      })
-      .catch((err) => {
-        onError(err);
-      })
-      .finally(onAlways);
+    this._requestWithoutBody(`cards/likes/${cardId}`, 'PUT', onSuccess, onError, onAlways);
   }
 
   removingLike(cardId, onSuccess, onError, onAlways) {
-    fetch(`https://mesto.nomoreparties.co/v1/cohort-14/cards/likes/${cardId}`, {
-      method: 'DELETE',
+    this._requestWithoutBody(`cards/likes/${cardId}`, 'DELETE', onSuccess, onError, onAlways);
+  }
+
+  updatingUserAvatar(avatar, onSuccess, onError) {
+    this._requestWithBody('users/me/avatar', {
+      avatar: avatar
+    }, 'PATCH', onSuccess, onError);
+  }
+
+  _requestWithoutBodyWithoutAlways(partOfPath, method, onSuccess, onError) {
+    this._requestWithoutBody(partOfPath, method, onSuccess, onError, () => {
+    });
+  }
+
+  _requestWithoutBody(partOfPath, method, onSuccess, onError, onAlways) {
+    this._request(partOfPath, null, method, onSuccess, onError, onAlways);
+  }
+
+  _requestWithBody(partOfPath, body, method, onSuccess, onError) {
+    this._request(partOfPath, body, method, onSuccess, onError, () => {
+    });
+  }
+
+  _request(partOfPath, body, method, onSuccess, onError, onAlways) {
+    let init = {
+      method: method,
       headers: {
-        authorization: 'f9d0b5b2-0cc9-4d30-9246-1c45800f0e24'
+        authorization: this._token
       }
-    })
+    };
+
+
+    if (body !== null) {
+      init.body = JSON.stringify(body);
+      init.headers['Content-Type'] = 'application/json';
+    }
+
+    fetch(`https://mesto.nomoreparties.co/v1/cohort-14/${partOfPath}`, init)
       .then((res) => {
         return res.json();
       })
@@ -137,28 +82,6 @@ export default class Api {
         onError(err);
       })
       .finally(onAlways);
-  }
-
-  updatingUserAvatar(avatar, onSuccess, onError) {
-    fetch('https://mesto.nomoreparties.co/v1/cohort-14/users/me/avatar', {
-      method: 'PATCH',
-      headers: {
-        authorization: 'f9d0b5b2-0cc9-4d30-9246-1c45800f0e24',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        avatar: avatar
-      })
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        onSuccess(data);
-      })
-      .catch((err) => {
-        onError(err);
-      });
   }
 }
 
