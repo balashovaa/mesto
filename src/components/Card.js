@@ -1,12 +1,13 @@
 import PopupWithForm from "./PopupWithForm.js";
 
+let itemToDelete;
 let cardToDelete;
 let _api;
 
 function onConfirmDelete(formData, onSuccess, onError) {
-  _api.removeCard(1, onRemoveCardSuccess, onError);
+  _api.removeCard(itemToDelete._id, onRemoveCardSuccess, onError);
 
-  function onRemoveCardSuccess(){
+  function onRemoveCardSuccess() {
     cardToDelete.remove();
     onSuccess();
   }
@@ -23,14 +24,19 @@ export default class Card {
     _api = api;
   }
 
-  getElement(name, link, likes, is_deletable) {
+  setUserId(id) {
+    this._userId = id;
+  }
+
+  getElement(item) {
+    const name = item.name;
+    const link = item.link;
+    const owner = item.owner;
     const elementTemplate = document.querySelector(this._selectorTemplateElement);
     const newElement = elementTemplate.cloneNode(true);
     const elementPhoto = newElement.querySelector('.element__photo');
-    const likesNumberOfNewElement = newElement.querySelector('.element__likes-number');
 
 
-    likesNumberOfNewElement.textContent = likes.length;
     newElement.classList.remove('element_template');
     elementPhoto.setAttribute('src', link);
     elementPhoto.setAttribute('alt', name);
@@ -38,18 +44,22 @@ export default class Card {
     elementPhoto.addEventListener('click', () => {
       this._handleCardClick(name, link);
     });
-    this._addLikeToElement(newElement, likesNumberOfNewElement);
+    this._addLikeToElement(newElement, item, this._userId);
 
-    if (is_deletable) {
-      this._addDeleteToElement(newElement);
+    if (owner._id === this._userId) {
+      this._addDeleteToElement(newElement, item);
     }
 
 
     return newElement;
   }
 
-  _addLikeToElement(newElement, likesNumberOfNewElement) {
+  _addLikeToElement(newElement, item, userId) {
     const like = newElement.querySelector('.element__like');
+    const likesNumberOfNewElement = newElement.querySelector('.element__likes-number');
+
+
+    fill(item.likes);
 
     function handleLikeClick() {
       if (like.classList.contains('element__like_status_request-send') === false) {
@@ -63,28 +73,46 @@ export default class Card {
       }
     }
 
-    function likeSetting(){
-      _api.likeSetting(1, onLikeSettingSuccess, onLikeSettingError, onLikeAlways);
+    function fill(likes) {
+      let isILiked = false;
 
-      function onLikeSettingSuccess(){
-        likesNumberOfNewElement.textContent++;
-        like.classList.toggle('element__like_status_added');
+
+      for (let like of likes) {
+        if (userId === like._id) {
+          isILiked = true;
+          break;
+        }
       }
 
-      function onLikeSettingError(errorMessage){
+      if (isILiked) {
+        like.classList.add('element__like_status_added');
+      } else {
+        like.classList.remove('element__like_status_added');
+      }
+
+      likesNumberOfNewElement.textContent = likes.length;
+    }
+
+    function likeSetting() {
+      _api.likeSetting(item._id, onLikeSettingSuccess, onLikeSettingError, onLikeAlways);
+
+      function onLikeSettingSuccess(item) {
+        fill(item.likes);
+      }
+
+      function onLikeSettingError(errorMessage) {
         alert(errorMessage);
       }
     }
 
-    function removingLike(){
-      _api.removingLike(1, onRemovingLikeSuccess, onRemovingLikeError, onLikeAlways)
+    function removingLike() {
+      _api.removingLike(item._id, onRemovingLikeSuccess, onRemovingLikeError, onLikeAlways)
 
-      function onRemovingLikeSuccess(){
-        likesNumberOfNewElement.textContent--;
-        like.classList.toggle('element__like_status_added');
+      function onRemovingLikeSuccess(item) {
+        fill(item.likes);
       }
 
-      function onRemovingLikeError(errorMessage){
+      function onRemovingLikeError(errorMessage) {
         alert(errorMessage);
       }
     }
@@ -96,11 +124,12 @@ export default class Card {
     like.addEventListener('click', handleLikeClick);
   }
 
-  _addDeleteToElement(newElement) {
+  _addDeleteToElement(newElement, item) {
     const deleteButton = newElement.querySelector('.element__delete-button');
 
 
     function handleDeleteButtonClick() {
+      itemToDelete = item;
       cardToDelete = newElement;
       popupConfirmDelete.open();
     }

@@ -15,50 +15,8 @@ const api = new Api({
     'Content-Type': 'application/json'
   }
 });
-
-
-const popupWithImage = new PopupWithImage('popup__photo-card');
-popupWithImage.setEventListeners();// непонятно зачем делать это здесь. Лучше сделать приватным методом и вызывать в конструкторе Popup
-
-function handleOpenImagePopupClick(name, link) {
-  popupWithImage.open(name, link);
-}
-
 const card = new Card('.element_template', handleOpenImagePopupClick, api);
 
-function renderer(item) {
-  return card.getElement(item.name, item.link, item.likes, item.is_deletable);
-}
-
-api.getInitialCards(onInitialCardsSuccess, onInitialCardsError);
-
-function onInitialCardsSuccess(listOfCard) {
-  const section = new Section({items: listOfCard, renderer: renderer}, '.element__cards');
-  section.renderItems();
-
-  function onPhotoSubmit(formData, onSuccess, onError) {
-    api.addingNewCard({
-      name: formData.get('place'),
-      link: formData.get('place-link')
-    }, onAddingNewCardSuccess, onError);
-
-    function onAddingNewCardSuccess(){
-      section.addItem(card.getElement(formData.get('place'), formData.get('place-link'), [], true));
-      onSuccess();
-    }
-  }
-
-  const popupPhoto = new PopupWithForm('popup__photo', onPhotoSubmit, 'Сохранение...');
-  const profileAddPhoto = document.querySelector('.profile__add-photo');
-  popupPhoto.setEventListeners();// непонятно зачем делать это здесь. Лучше сделать приватным методом и вызывать в конструкторе Popup
-  profileAddPhoto.addEventListener('click', () => {
-    popupPhoto.open();
-  });
-}
-
-function onInitialCardsError(errorMessage) {
-  alert(errorMessage);
-}
 
 api.loadingUserInformation(onLoadingUserInformationSuccess, onLoadingUserInformationError);
 
@@ -115,11 +73,63 @@ function onLoadingUserInformationSuccess(user) {
   popupEditAvatarButton.addEventListener('click', () => {
     popupAvatar.open()
   });
+
+  card.setUserId(user._id);
+  api.getInitialCards(onInitialCardsSuccess, onInitialCardsError);
 }
 
 function onLoadingUserInformationError(errorMessage) {
   alert(errorMessage);
 }
+
+
+
+const popupWithImage = new PopupWithImage('popup__photo-card');
+popupWithImage.setEventListeners();// непонятно зачем делать это здесь. Лучше сделать приватным методом и вызывать в конструкторе Popup
+
+function handleOpenImagePopupClick(name, link) {
+  popupWithImage.open(name, link);
+}
+
+
+function renderer(item) {
+  return card.getElement(item);
+}
+
+function onInitialCardsSuccess(listOfCard) {
+  const section = new Section({items: listOfCard, renderer: renderer}, '.element__cards');
+  section.renderItems();
+
+  function onPhotoSubmit(formData, onSuccess, onError) {
+    api.addingNewCard({
+      name: formData.get('place'),
+      link: formData.get('place-link')
+    }, onAddingNewCardSuccess, onError);
+
+    function onAddingNewCardSuccess(item){
+      section.addItem(card.getElement(item));
+      onSuccess();
+    }
+  }
+
+  const popupPhoto = new PopupWithForm('popup__photo', onPhotoSubmit, 'Сохранение...');
+  const profileAddPhoto = document.querySelector('.profile__add-photo');
+  popupPhoto.setEventListeners();// непонятно зачем делать это здесь. Лучше сделать приватным методом и вызывать в конструкторе Popup
+  profileAddPhoto.addEventListener('click', () => {
+    popupPhoto.open();
+  });
+}
+
+function onInitialCardsError(errorMessage) {
+  alert(errorMessage);
+}
+
+
+
+
+
+
+
 
 const config = {
   inputSelector: '.form__item',
