@@ -12,9 +12,7 @@ export default class Card {
     elementPhoto.setAttribute('src', link);
     elementPhoto.setAttribute('alt', name);
     newElement.querySelector('.element__title').textContent = name;
-    elementPhoto.addEventListener('click', () => {
-      Card._handleCardClick(name, link);
-    });
+    this._setEventListeners(elementPhoto, name, link);
     this._addLikeToElement(newElement, item);
 
     if (owner._id === Card._userId) {
@@ -55,6 +53,12 @@ export default class Card {
 
   getElement() {
     return this._element;
+  }
+
+  _setEventListeners(elementPhoto, name, link){
+    elementPhoto.addEventListener('click', () => {
+      Card._handleCardClick(name, link);
+    });
   }
 
   _addLikeToElement(newElement, item) {
