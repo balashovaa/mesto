@@ -1,4 +1,6 @@
 import Popup from './Popup.js';
+import ValidateEvent from './ValidateEvent.js';
+
 
 export default class PopupWithForm extends Popup {
   constructor(selector, callbackFormSubmit, buttonLabelOnSubmit) {
@@ -26,6 +28,7 @@ export default class PopupWithForm extends Popup {
     super.close();
 
     this._form.reset();
+    this._form.dispatchEvent(new ValidateEvent());
   }
 
   _onSubmitForm(event) {

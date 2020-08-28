@@ -1,3 +1,5 @@
+import ValidateEvent from "./ValidateEvent.js";
+
 export default class FormValidator {
   constructor(config, formElement) {
     this._config = config;
@@ -11,7 +13,7 @@ export default class FormValidator {
       event.preventDefault();
     });
 
-    this._formElement.addEventListener('reset', () => {
+    this._formElement.addEventListener(ValidateEvent.name, () => {
       this._toggleButton();
     });
 
