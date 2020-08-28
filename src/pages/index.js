@@ -11,8 +11,7 @@ import UserInfo from "../components/UserInfo.js";
 // Блок декларирования переменных
 const api = new Api('f9d0b5b2-0cc9-4d30-9246-1c45800f0e24', 'https://mesto.nomoreparties.co/v1/cohort-14');
 const popupConfirmDelete = new PopupWithForm('popup__confirm-delete', Card.onConfirmDelete, 'Удаление...');
-const userInfo = new UserInfo({selectorName: 'profile__name', selectorDescription: 'profile__description'});
-const avatarPhoto = document.querySelector('.profile__photo');
+const userInfo = new UserInfo({selectorName: 'profile__name', selectorDescription: 'profile__description'}, 'profile__photo');
 const formItemName = document.querySelector('.form__item_name');
 const formItemDescription = document.querySelector('.form__item_description');
 const profileButtonEdit = document.querySelector('.profile__button-edit');
@@ -66,7 +65,7 @@ function onClickProfileButtonEdit() {
 
 function onLoadingUserInformationSuccess(user) {
   userInfo.setUserInfo({name: user.name, description: user.about});
-  avatarPhoto.setAttribute('src', user.avatar);
+  userInfo.setAvatar(user.avatar);
   Card.setUserId(user._id);
   api.getInitialCards(onInitialCardsSuccess, onInitialCardsError);
 }
@@ -87,7 +86,7 @@ function onUpdateAvatar(formData, onSuccess, onError) {
   api.updatingUserAvatar(formData.get('avatar-link'), onUpdatingUserAvatarSuccess, onError);
 
   function onUpdatingUserAvatarSuccess() {
-    avatarPhoto.setAttribute('src', formData.get('avatar-link'));
+    userInfo.setAvatar(formData.get('avatar-link'));
     onSuccess();
   }
 }
