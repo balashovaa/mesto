@@ -1,6 +1,7 @@
 export default class Api {
-  constructor(token) {
+  constructor(token, url) {
     this._token = token;
+    this._url = url;
   }
 
   getInitialCards(onSuccess, onError) {
@@ -71,7 +72,7 @@ export default class Api {
       init.headers['Content-Type'] = 'application/json';
     }
 
-    fetch(`https://mesto.nomoreparties.co/v1/cohort-14/${partOfPath}`, init)
+    fetch(`${this._url}/${partOfPath}`, init)
       .then(res => {
         if (res.ok) {
           return res.json();
