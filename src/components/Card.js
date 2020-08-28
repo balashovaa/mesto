@@ -1,45 +1,5 @@
-import PopupWithForm from "./PopupWithForm.js";
-
-let itemToDelete;
-let cardToDelete;
-let _api;
-
-function onConfirmDelete(formData, onSuccess, onError) {
-  _api.removeCard(itemToDelete._id, onRemoveCardSuccess, onError);
-
-  function onRemoveCardSuccess() {
-    cardToDelete.remove();
-    onSuccess();
-  }
-}
-
-const popupConfirmDelete = new PopupWithForm('popup__confirm-delete', onConfirmDelete, 'Удаление...');
-popupConfirmDelete.setEventListeners();
-
-
 export default class Card {
   constructor(item) {
-    this._item = item;
-  }
-
-  static setApi(api) {
-    _api = api;
-  }
-
-  static setSelectorTemplateElement(selectorTemplateElement) {
-    Card._selectorTemplateElement = selectorTemplateElement;
-  }
-
-  static setHandleCardClick(handleCardClick) {
-    Card._handleCardClick = handleCardClick;
-  }
-
-  static setUserId(id) {
-    Card._userId = id;
-  }
-
-  getElement() {
-    const item = this._item;
     const name = item.name;
     const link = item.link;
     const owner = item.owner;
@@ -55,17 +15,49 @@ export default class Card {
     elementPhoto.addEventListener('click', () => {
       Card._handleCardClick(name, link);
     });
-    this._addLikeToElement(newElement, item, Card._userId);
+    this._addLikeToElement(newElement, item);
 
     if (owner._id === Card._userId) {
       this._addDeleteToElement(newElement, item);
     }
 
-
-    return newElement;
+    this._element = newElement;
   }
 
-  _addLikeToElement(newElement, item, userId) {
+  static setPopupConfirmDelete(popupConfirmDelete) {
+    Card._popupConfirmDelete = popupConfirmDelete;
+  }
+
+  static onConfirmDelete(formData, onSuccess, onError) {
+    Card._api.removeCard(Card._itemToDelete._id, onRemoveCardSuccess, onError);
+
+    function onRemoveCardSuccess() {
+      Card._cardToDelete.remove();
+      onSuccess();
+    }
+  }
+
+  static setApi(api) {
+    Card._api = api;
+  }
+
+  static setSelectorTemplateElement(selectorTemplateElement) {
+    Card._selectorTemplateElement = selectorTemplateElement;
+  }
+
+  static setHandleCardClick(handleCardClick) {
+    Card._handleCardClick = handleCardClick;
+  }
+
+  static setUserId(id) {
+    Card._userId = id;
+  }
+
+  getElement() {
+    return this._element;
+  }
+
+  _addLikeToElement(newElement, item) {
     const like = newElement.querySelector('.element__like');
     const likesNumberOfNewElement = newElement.querySelector('.element__likes-number');
 
@@ -79,7 +71,7 @@ export default class Card {
 
 
       for (let like of likes) {
-        if (userId === like._id) {
+        if (Card._userId === like._id) {
           isILiked = true;
           break;
         }
@@ -107,7 +99,7 @@ export default class Card {
     }
 
     function likeSetting() {
-      _api.likeSetting(item._id, onLikeSettingSuccess, onLikeSettingError, onLikeAlways);
+      Card._api.likeSetting(item._id, onLikeSettingSuccess, onLikeSettingError, onLikeAlways);
 
       function onLikeSettingSuccess(item) {
         fill(item.likes);
@@ -119,7 +111,7 @@ export default class Card {
     }
 
     function removingLike() {
-      _api.removingLike(item._id, onRemovingLikeSuccess, onRemovingLikeError, onLikeAlways)
+      Card._api.removingLike(item._id, onRemovingLikeSuccess, onRemovingLikeError, onLikeAlways)
 
       function onRemovingLikeSuccess(item) {
         fill(item.likes);
@@ -140,13 +132,12 @@ export default class Card {
 
 
     function handleDeleteButtonClick() {
-      itemToDelete = item;
-      cardToDelete = newElement;
-      popupConfirmDelete.open();
+      Card._itemToDelete = item;
+      Card._cardToDelete = newElement;
+      Card._popupConfirmDelete.open();
     }
 
     deleteButton.addEventListener('click', handleDeleteButtonClick);
     deleteButton.classList.add('element__delete-button_deletable');
   }
 }
-
