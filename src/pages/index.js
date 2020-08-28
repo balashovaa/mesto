@@ -10,7 +10,6 @@ import UserInfo from "../components/UserInfo.js";
 
 // Блок декларирования переменных
 const api = new Api('f9d0b5b2-0cc9-4d30-9246-1c45800f0e24', 'https://mesto.nomoreparties.co/v1/cohort-14');
-const card = new Card('.element_template', handleOpenImagePopupClick, api);
 const userInfo = new UserInfo({selectorName: 'profile__name', selectorDescription: 'profile__description'});
 const avatarPhoto = document.querySelector('.profile__photo');
 const formItemName = document.querySelector('.form__item_name');
@@ -33,6 +32,9 @@ const saveAvatarPhotoFormValidator = new FormValidator(config, document.querySel
 
 
 // Блок логики
+Card.setApi(api);
+Card.setSelectorTemplateElement('.element_template');
+Card.setHandleCardClick(handleOpenImagePopupClick);
 api.loadingUserInformation(onLoadingUserInformationSuccess, onLoadingUserInformationError);
 popupAvatar.setEventListeners();
 popupProfile.setEventListeners();
@@ -62,7 +64,7 @@ function onClickProfileButtonEdit() {
 function onLoadingUserInformationSuccess(user) {
   userInfo.setUserInfo({name: user.name, description: user.about});
   avatarPhoto.setAttribute('src', user.avatar);
-  card.setUserId(user._id);
+  Card.setUserId(user._id);
   api.getInitialCards(onInitialCardsSuccess, onInitialCardsError);
 }
 
@@ -96,7 +98,10 @@ function handleOpenImagePopupClick(name, link) {
 }
 
 function renderer(item) {
-  return card.getElement(item);
+  const myCard = new Card(item);
+
+
+  return myCard.getElement();
 }
 
 function onInitialCardsSuccess(listOfCard) {
@@ -110,7 +115,10 @@ function onInitialCardsSuccess(listOfCard) {
     }, onAddingNewCardSuccess, onError);
 
     function onAddingNewCardSuccess(item) {
-      section.addItem(card.getElement(item));
+      const myCard = new Card(item);
+
+
+      section.addItem(myCard.getElement());
       onSuccess();
     }
   }

@@ -18,21 +18,32 @@ popupConfirmDelete.setEventListeners();
 
 
 export default class Card {
-  constructor(selectorTemplateElement, handleCardClick, api) {
-    this._selectorTemplateElement = selectorTemplateElement;
-    this._handleCardClick = handleCardClick;
+  constructor(item) {
+    this._item = item;
+  }
+
+  static setApi(api) {
     _api = api;
   }
 
-  setUserId(id) {
-    this._userId = id;
+  static setSelectorTemplateElement(selectorTemplateElement) {
+    Card._selectorTemplateElement = selectorTemplateElement;
   }
 
-  getElement(item) {
+  static setHandleCardClick(handleCardClick) {
+    Card._handleCardClick = handleCardClick;
+  }
+
+  static setUserId(id) {
+    Card._userId = id;
+  }
+
+  getElement() {
+    const item = this._item;
     const name = item.name;
     const link = item.link;
     const owner = item.owner;
-    const elementTemplate = document.querySelector(this._selectorTemplateElement);
+    const elementTemplate = document.querySelector(Card._selectorTemplateElement);
     const newElement = elementTemplate.cloneNode(true);
     const elementPhoto = newElement.querySelector('.element__photo');
 
@@ -42,11 +53,11 @@ export default class Card {
     elementPhoto.setAttribute('alt', name);
     newElement.querySelector('.element__title').textContent = name;
     elementPhoto.addEventListener('click', () => {
-      this._handleCardClick(name, link);
+      Card._handleCardClick(name, link);
     });
-    this._addLikeToElement(newElement, item, this._userId);
+    this._addLikeToElement(newElement, item, Card._userId);
 
-    if (owner._id === this._userId) {
+    if (owner._id === Card._userId) {
       this._addDeleteToElement(newElement, item);
     }
 
